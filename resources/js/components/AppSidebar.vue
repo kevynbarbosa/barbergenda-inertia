@@ -2,7 +2,8 @@
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import ThemeToggle from '@/components/ThemeToggle.vue';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator } from '@/components/ui/sidebar';
 import { dashboard, rolesAndPermissions } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
@@ -63,6 +64,13 @@ const footerNavItems: NavItem[] = [
 
         <SidebarFooter>
             <NavFooter :items="footerNavItems" />
+            <SidebarSeparator />
+            <div class="px-2 py-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-muted-foreground">Tema</span>
+                    <ThemeToggle />
+                </div>
+            </div>
             <NavUser />
         </SidebarFooter>
     </Sidebar>
