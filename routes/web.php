@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -11,10 +13,10 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
-Route::get('roles-and-permissions', function () {
-    return Inertia::render('rbac/RolesAndPermissions');
-})->middleware(['auth', 'verified'])->name('roles-and-permissions');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('roles', RoleController::class);
+    Route::resource('permissions', PermissionController::class);
+});
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';

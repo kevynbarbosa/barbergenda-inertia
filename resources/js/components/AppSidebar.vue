@@ -4,7 +4,8 @@ import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator } from '@/components/ui/sidebar';
-import { dashboard, rolesAndPermissions } from '@/routes';
+import { dashboard } from '@/routes';
+import { index as rolesIndex } from '@/routes/roles';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { BookOpen, Folder, Inbox, LayoutGrid, ShieldUser } from 'lucide-vue-next';
@@ -18,8 +19,8 @@ const mainNavItems: NavItem[] = [
     },
 
     {
-        title: 'Permissões',
-        href: rolesAndPermissions(),
+        title: 'Roles & Permissões',
+        href: rolesIndex.url(),
         icon: ShieldUser,
     },
 
