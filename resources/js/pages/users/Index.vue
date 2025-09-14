@@ -2,93 +2,127 @@
     <div class="container mx-auto max-w-7xl p-4">
         <div class="mb-6 flex items-center justify-between">
             <div>
-                <h1 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Usuários</h1>
-                <p class="text-gray-600 dark:text-gray-400">Gerencie os usuários do sistema</p>
+                <h1 class="mb-2 text-3xl font-bold">Usuários</h1>
+                <p>Gerencie os usuários do sistema</p>
             </div>
-            <Link
-                :href="usersCreate.url()"
-                class="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700"
-            >
-                + Novo Usuário
-            </Link>
+            <Button as-child>
+                <Link :href="usersCreate.url()"> + Novo Usuário </Link>
+            </Button>
         </div>
 
-        <div class="rounded-lg bg-white shadow dark:bg-gray-800">
+        <div class="rounded-lg shadow">
             <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Lista de Usuários</h2>
-            </div>
-            <div class="p-6">
-                <div class="grid gap-4">
-                    <div
-                        v-for="user in users"
-                        :key="user.id"
-                        class="rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-700/50"
-                    >
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <div class="mb-2 flex items-center gap-3">
-                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                        {{ user.name }}
-                                    </h3>
-                                    <span v-if="user.email_verified_at" class="rounded-full bg-green-100 px-2 py-1 text-xs text-green-800 dark:bg-green-900/30 dark:text-green-200">
-                                        Verificado
-                                    </span>
-                                    <span v-else class="rounded-full bg-yellow-100 px-2 py-1 text-xs text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200">
-                                        Não verificado
-                                    </span>
-                                </div>
-                                <p class="text-gray-600 dark:text-gray-400">
-                                    {{ user.email }}
-                                </p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">
-                                    Criado em {{ formatDate(user.created_at) }}
-                                </p>
-                                <div v-if="user.roles && user.roles.length > 0" class="mt-2">
-                                    <div class="flex flex-wrap gap-1">
-                                        <span
-                                            v-for="role in user.roles"
-                                            :key="role.id"
-                                            class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-200"
-                                        >
-                                            {{ role.display_name }}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div v-else class="mt-2">
-                                    <span class="text-xs text-gray-400 dark:text-gray-500">Nenhuma role atribuída</span>
-                                </div>
-                            </div>
-                            <div class="ml-4 flex gap-2">
-                                <Link
-                                    :href="usersShow.url(user.id)"
-                                    class="text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-                                >
-                                    Ver
-                                </Link>
-                                <Link
-                                    :href="usersEdit.url(user.id)"
-                                    class="text-sm font-medium text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
-                                >
-                                    Editar
-                                </Link>
-                                <button
-                                    @click="deleteUser(user.id)"
-                                    class="text-sm font-medium text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
-                                >
-                                    Deletar
-                                </button>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="font-semibol text-xl">Lista de Usuários</h2>
+                        <p class="mt-1 text-sm">Mostrando {{ users.from }} a {{ users.to }} de {{ users.total }} usuários</p>
+                    </div>
+                    <div class="w-full max-w-sm">
+                        <div class="relative">
+                            <Input v-model="searchTerm" @input="handleSearch" type="text" placeholder="Buscar por nome ou email..." />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <Search v-if="!searchTerm" class="h-4 w-4 text-gray-400" />
+                                <Button v-else @click="clearSearch" variant="ghost" size="icon" class="h-4 w-4">
+                                    <X class="h-4 w-4" />
+                                </Button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="overflow-hidden">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Nome</TableHead>
+                            <TableHead>Email</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Roles</TableHead>
+                            <TableHead>Data de Criação</TableHead>
+                            <TableHead class="text-right">Ações</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        <TableRow v-for="user in users.data" :key="user.id">
+                            <TableCell class="font-medium">{{ user.name }}</TableCell>
+                            <TableCell>{{ user.email }}</TableCell>
+                            <TableCell>
+                                <span
+                                    v-if="user.email_verified_at"
+                                    class="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs text-green-800 dark:bg-green-900/30 dark:text-green-200"
+                                >
+                                    Verificado
+                                </span>
+                                <span
+                                    v-else
+                                    class="inline-flex items-center rounded-full bg-yellow-100 px-2 py-1 text-xs text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200"
+                                >
+                                    Não verificado
+                                </span>
+                            </TableCell>
+                            <TableCell>
+                                <div v-if="user.roles && user.roles.length > 0" class="flex flex-wrap gap-1">
+                                    <span
+                                        v-for="role in user.roles"
+                                        :key="role.id"
+                                        class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-200"
+                                    >
+                                        {{ role.display_name }}
+                                    </span>
+                                </div>
+                                <span v-else class="text-xs text-gray-400 dark:text-gray-500">-</span>
+                            </TableCell>
+                            <TableCell>{{ formatDate(user.created_at) }}</TableCell>
+                            <TableCell class="text-right">
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger as-child>
+                                        <Button variant="outline" size="icon">
+                                            <MoreHorizontal class="h-4 w-4" />
+                                            <span class="sr-only">Abrir menu</span>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuItem as-child>
+                                            <Link :href="usersShow.url(user.id)" class="flex cursor-default items-center">
+                                                <Eye class="mr-2 h-4 w-4" />
+                                                Ver
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem as-child>
+                                            <Link :href="usersEdit.url(user.id)" class="flex cursor-default items-center">
+                                                <Edit class="mr-2 h-4 w-4" />
+                                                Editar
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem @click="deleteUser(user.id)" class="text-red-600 focus:text-red-600 dark:text-red-400">
+                                            <Trash2 class="mr-2 h-4 w-4" />
+                                            Deletar
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </div>
+
+            <!-- Paginação -->
+            <DataTablePagination :data="users" />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import DataTablePagination from '@/components/DataTablePagination.vue';
 import { create as usersCreate, destroy as usersDestroy, edit as usersEdit, show as usersShow } from '@/routes/users';
 import { Link, router } from '@inertiajs/vue3';
+import { Edit, Eye, MoreHorizontal, Search, Trash2, X } from 'lucide-vue-next';
+import { ref } from 'vue';
 
 interface Role {
     id: number;
@@ -107,9 +141,29 @@ interface User {
     roles: Role[];
 }
 
-defineProps<{
-    users: User[];
+interface PaginatedUsers {
+    current_page: number;
+    data: User[];
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+}
+
+const props = defineProps<{
+    users: PaginatedUsers;
+    filters: {
+        search: string | null;
+    };
 }>();
+
+const searchTerm = ref(props.filters.search || '');
 
 const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('pt-BR', {
@@ -123,5 +177,46 @@ const deleteUser = (userId: number) => {
     if (confirm('Tem certeza que deseja deletar este usuário?')) {
         router.delete(usersDestroy.url(userId));
     }
+};
+
+
+// Função debounce simples
+const debounce = (func: (...args: any[]) => void, wait: number) => {
+    let timeout: ReturnType<typeof setTimeout>;
+    return (...args: any[]) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), wait);
+    };
+};
+
+const performSearch = debounce(() => {
+    router.get(
+        '/users',
+        {
+            search: searchTerm.value || undefined,
+        },
+        {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true,
+        },
+    );
+}, 300);
+
+const handleSearch = () => {
+    performSearch();
+};
+
+const clearSearch = () => {
+    searchTerm.value = '';
+    router.get(
+        '/users',
+        {},
+        {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true,
+        },
+    );
 };
 </script>

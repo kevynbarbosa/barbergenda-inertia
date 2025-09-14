@@ -15,10 +15,24 @@ class UserController extends Controller
 {
     public function index(): Response
     {
-        $users = User::with('roles')->latest()->get();
+        $search = request('search');
+
+        $users = User::with('roles')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'ILIKE', "%{$search}%")
+                          ->orWhere('email', 'ILIKE', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(15)
+            ->withQueryString();
 
         return Inertia::render('users/Index', [
             'users' => $users,
+            'filters' => [
+                'search' => $search,
+            ],
         ]);
     }
 

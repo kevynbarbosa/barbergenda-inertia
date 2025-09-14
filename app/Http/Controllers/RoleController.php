@@ -23,28 +23,28 @@ class RoleController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('rbac/CreateRole', [
-            'permissions' => Permission::all(),
-        ]);
+        return Inertia::render('roles/Create');
     }
 
     public function store(StoreRoleRequest $request): RedirectResponse
     {
-        $role = Role::create($request->validated());
+        $role = Role::create($request->only(['name', 'display_name', 'description']));
 
-        if ($request->has('permissions')) {
-            $role->permissions()->sync($request->permissions);
+        // Sync permissions if provided
+        if ($request->has('permissions') && is_array($request->permissions)) {
+            $permissionIds = $this->getPermissionIds($request->permissions);
+            $role->permissions()->sync($permissionIds);
         }
 
         return redirect()->route('roles.index')
-            ->with('success', 'Role created successfully.');
+            ->with('success', 'Role criada com sucesso.');
     }
 
     public function show(Role $role): Response
     {
-        $role->load('permissions');
+        $role->loadCount('users');
 
-        return Inertia::render('rbac/ShowRole', [
+        return Inertia::render('roles/Show', [
             'role' => $role,
         ]);
     }
@@ -53,29 +53,44 @@ class RoleController extends Controller
     {
         $role->load('permissions');
 
-        return Inertia::render('rbac/EditRole', [
-            'role' => $role,
-            'permissions' => Permission::all(),
+        // Convert permissions to the format expected by the frontend
+        $roleData = $role->toArray();
+        $roleData['permissions'] = $role->permissions->pluck('name')->toArray();
+
+        return Inertia::render('roles/Edit', [
+            'role' => $roleData,
         ]);
     }
 
     public function update(UpdateRoleRequest $request, Role $role): RedirectResponse
     {
-        $role->update($request->validated());
+        $role->update($request->only(['name', 'display_name', 'description']));
 
-        if ($request->has('permissions')) {
-            $role->permissions()->sync($request->permissions);
+        // Sync permissions if provided
+        if ($request->has('permissions') && is_array($request->permissions)) {
+            $permissionIds = $this->getPermissionIds($request->permissions);
+            $role->permissions()->sync($permissionIds);
         }
 
         return redirect()->route('roles.index')
-            ->with('success', 'Role updated successfully.');
+            ->with('success', 'Role atualizada com sucesso.');
     }
 
     public function destroy(Role $role): RedirectResponse
     {
+        if ($role->users()->count() > 0) {
+            return redirect()->route('roles.index')
+                ->with('error', 'Não é possível deletar uma role que possui usuários atribuídos.');
+        }
+
         $role->delete();
 
         return redirect()->route('roles.index')
-            ->with('success', 'Role deleted successfully.');
+            ->with('success', 'Role deletada com sucesso.');
+    }
+
+    private function getPermissionIds(array $permissionNames): array
+    {
+        return Permission::whereIn('name', $permissionNames)->pluck('id')->toArray();
     }
 }
