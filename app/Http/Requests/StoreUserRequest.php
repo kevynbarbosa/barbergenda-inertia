@@ -25,6 +25,8 @@ class StoreUserRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'roles' => ['nullable', 'array'],
+            'roles.*' => ['exists:roles,id'],
         ];
     }
 
@@ -38,6 +40,8 @@ class StoreUserRequest extends FormRequest
             'password.required' => 'A senha é obrigatória.',
             'password.min' => 'A senha deve ter pelo menos 8 caracteres.',
             'password.confirmed' => 'A confirmação da senha não confere.',
+            'roles.array' => 'As roles devem ser um array.',
+            'roles.*.exists' => 'Role inválida selecionada.',
         ];
     }
 }

@@ -25,6 +25,8 @@ class UpdateUserRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $this->route('user')->id],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'roles' => ['nullable', 'array'],
+            'roles.*' => ['exists:roles,id'],
         ];
     }
 
@@ -37,6 +39,8 @@ class UpdateUserRequest extends FormRequest
             'email.unique' => 'Este e-mail já está em uso.',
             'password.min' => 'A senha deve ter pelo menos 8 caracteres.',
             'password.confirmed' => 'A confirmação da senha não confere.',
+            'roles.array' => 'As roles devem ser um array.',
+            'roles.*.exists' => 'Role inválida selecionada.',
         ];
     }
 }

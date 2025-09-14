@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +15,7 @@ class UserController extends Controller
 {
     public function index(): Response
     {
-        $users = User::latest()->get();
+        $users = User::with('roles')->latest()->get();
 
         return Inertia::render('users/Index', [
             'users' => $users,
@@ -23,16 +24,24 @@ class UserController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('users/Create');
+        $roles = Role::all();
+
+        return Inertia::render('users/Create', [
+            'roles' => $roles,
+        ]);
     }
 
     public function store(StoreUserRequest $request): RedirectResponse
     {
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        if ($request->has('roles')) {
+            $user->roles()->sync($request->roles);
+        }
 
         return redirect()->route('users.index')
             ->with('success', 'Usuário criado com sucesso.');
@@ -40,6 +49,8 @@ class UserController extends Controller
 
     public function show(User $user): Response
     {
+        $user->load('roles');
+
         return Inertia::render('users/Show', [
             'user' => $user,
         ]);
@@ -47,8 +58,12 @@ class UserController extends Controller
 
     public function edit(User $user): Response
     {
+        $user->load('roles');
+        $roles = Role::all();
+
         return Inertia::render('users/Edit', [
             'user' => $user,
+            'roles' => $roles,
         ]);
     }
 
@@ -64,6 +79,10 @@ class UserController extends Controller
         }
 
         $user->update($data);
+
+        if ($request->has('roles')) {
+            $user->roles()->sync($request->roles);
+        }
 
         return redirect()->route('users.index')
             ->with('success', 'Usuário atualizado com sucesso.');

@@ -73,6 +73,32 @@
                             :required="!!form.password"
                         />
                     </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Roles
+                        </label>
+                        <div class="space-y-2 max-h-32 overflow-y-auto border border-gray-300 rounded-md p-2 dark:border-gray-600">
+                            <div v-for="role in props.roles" :key="role.id" class="flex items-center">
+                                <input
+                                    :id="`role-${role.id}`"
+                                    v-model="form.roles"
+                                    :value="role.id"
+                                    type="checkbox"
+                                    class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+                                />
+                                <label :for="`role-${role.id}`" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                    {{ role.display_name }}
+                                    <span v-if="role.description" class="text-gray-500 dark:text-gray-400">
+                                        - {{ role.description }}
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div v-if="form.errors.roles" class="mt-1 text-sm text-red-600">
+                            {{ form.errors.roles }}
+                        </div>
+                    </div>
                 </div>
 
                 <div class="mt-8 flex justify-end gap-3">
@@ -99,6 +125,13 @@
 import { index as usersIndex, update as usersUpdate } from '@/routes/users';
 import { Link, useForm } from '@inertiajs/vue3';
 
+interface Role {
+    id: number;
+    name: string;
+    display_name: string;
+    description?: string;
+}
+
 interface User {
     id: number;
     name: string;
@@ -106,10 +139,12 @@ interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
+    roles: Role[];
 }
 
 const props = defineProps<{
     user: User;
+    roles: Role[];
 }>();
 
 const form = useForm({
@@ -117,6 +152,7 @@ const form = useForm({
     email: props.user.email,
     password: '',
     password_confirmation: '',
+    roles: props.user.roles.map(role => role.id),
 });
 
 const submit = () => {

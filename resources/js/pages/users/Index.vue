@@ -43,6 +43,20 @@
                                 <p class="text-sm text-gray-500 dark:text-gray-400">
                                     Criado em {{ formatDate(user.created_at) }}
                                 </p>
+                                <div v-if="user.roles && user.roles.length > 0" class="mt-2">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span
+                                            v-for="role in user.roles"
+                                            :key="role.id"
+                                            class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-200"
+                                        >
+                                            {{ role.display_name }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div v-else class="mt-2">
+                                    <span class="text-xs text-gray-400 dark:text-gray-500">Nenhuma role atribuída</span>
+                                </div>
                             </div>
                             <div class="ml-4 flex gap-2">
                                 <Link
@@ -76,6 +90,13 @@
 import { create as usersCreate, destroy as usersDestroy, edit as usersEdit, show as usersShow } from '@/routes/users';
 import { Link, router } from '@inertiajs/vue3';
 
+interface Role {
+    id: number;
+    name: string;
+    display_name: string;
+    description?: string;
+}
+
 interface User {
     id: number;
     name: string;
@@ -83,6 +104,7 @@ interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
+    roles: Role[];
 }
 
 defineProps<{
