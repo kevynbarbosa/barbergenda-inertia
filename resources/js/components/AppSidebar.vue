@@ -6,9 +6,10 @@ import ThemeToggle from '@/components/ThemeToggle.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as rolesIndex } from '@/routes/roles';
+import { index as usersIndex } from '@/routes/users';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, Inbox, LayoutGrid, ShieldUser } from 'lucide-vue-next';
+import { BookOpen, Folder, Inbox, LayoutGrid, ShieldUser, Users } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -16,6 +17,12 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+
+    {
+        title: 'Usuários',
+        href: usersIndex.url(),
+        icon: Users,
     },
 
     {
