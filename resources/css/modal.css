@@ -1,0 +1,12 @@
+/* app/entrypoints/frontend/application.css */
+@source "../../node_modules/@inertiaui/modal-vue";
+/* Modal */
+.im-modal-wrapper {
+    @apply rounded dark:border;
+}
+.im-modal-content {
+    @apply bg-background text-foreground;
+}
+.im-close-button {
+    @apply cursor-pointer;
+}

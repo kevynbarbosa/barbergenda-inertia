@@ -1,9 +1,10 @@
 import '../css/app.css';
 
 import { createInertiaApp } from '@inertiajs/vue3';
+import { Modal, ModalLink, renderApp } from '@inertiaui/modal-vue';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
-import { createApp, h } from 'vue';
+import { createApp } from 'vue';
 import { initializeTheme } from './composables/useAppearance';
 import AppLayout from './layouts/AppLayout.vue';
 
@@ -22,8 +23,10 @@ createInertiaApp({
         return page;
     },
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+        createApp({ render: renderApp(App, props) })
             .use(plugin)
+            .component('Modal', Modal)
+            .component('ModalLink', ModalLink)
             .mount(el);
     },
     progress: {

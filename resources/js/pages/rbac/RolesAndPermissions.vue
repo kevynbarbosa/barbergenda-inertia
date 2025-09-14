@@ -43,14 +43,11 @@ import type { Module } from '@/components/rbac/types';
 import { useMobile } from '@/composables/useMobile';
 import { reactive, ref } from 'vue';
 
-// Estado reativo
 const modules = reactive(moduleData);
 const selectedModule = ref<Module>(modules[0]);
 
-// Composables
 const { isMobile } = useMobile();
 
-// Funções auxiliares
 const getEnabledCount = (module: Module): number => {
     return module.permissions.filter((permission) => permission.enabled).length;
 };

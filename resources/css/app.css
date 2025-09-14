@@ -5,6 +5,8 @@
 /* Generate theme at https://shadcnstudio.com/theme-generator copy and paste inside theme.css*/
 @import './theme.css';
 
+@import './modal.css';
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
