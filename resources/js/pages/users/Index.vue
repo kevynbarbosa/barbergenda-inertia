@@ -1,41 +1,33 @@
 <template>
     <div class="container mx-auto max-w-7xl space-y-6 p-6">
-        <!-- Header Card -->
-        <Card>
-            <CardHeader>
-                <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <CardTitle class="text-2xl">Usuários</CardTitle>
-                        <CardDescription>Gerencie os usuários do sistema</CardDescription>
-                    </div>
-                    <Button as-child class="w-fit">
-                        <Link :href="usersCreate.url()">
-                            <Plus class="mr-2 h-4 w-4" />
-                            Novo Usuário
-                        </Link>
-                    </Button>
-                </div>
-            </CardHeader>
-        </Card>
-
         <!-- Main Table Card -->
         <Card>
             <CardHeader>
-                <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                        <CardTitle>Lista de Usuários</CardTitle>
-                        <CardDescription>
-                            Mostrando {{ users.from || 0 }} a {{ users.to || 0 }} de {{ users.total || 0 }} usuários
-                        </CardDescription>
+                <div class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <CardTitle class="text-3xl">Lista de Usuários</CardTitle>
+                            <CardDescription>
+                                Mostrando {{ users.from || 0 }} a {{ users.to || 0 }} de {{ users.total || 0 }} usuários
+                            </CardDescription>
+                        </div>
+                        <Button as-child class="w-fit">
+                            <Link :href="usersCreate.url()">
+                                <Plus class="mr-2 h-4 w-4" />
+                                Novo Usuário
+                            </Link>
+                        </Button>
                     </div>
-                    <div class="w-full max-w-sm">
-                        <div class="relative">
-                            <Input v-model="searchTerm" @input="handleSearch" type="text" placeholder="Buscar por nome ou email..." class="pr-10" />
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <Search v-if="!searchTerm" class="h-4 w-4 text-muted-foreground" />
-                                <Button v-else @click="clearSearch" variant="ghost" size="sm" class="h-6 w-6 p-0">
-                                    <X class="h-3 w-3" />
-                                </Button>
+                    <div class="flex justify-end">
+                        <div class="w-full max-w-sm">
+                            <div class="relative">
+                                <Input v-model="searchTerm" @input="handleSearch" type="text" placeholder="Buscar por nome ou email..." class="pr-10" />
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <Search v-if="!searchTerm" class="h-4 w-4 text-muted-foreground" />
+                                    <Button v-else @click="clearSearch" variant="ghost" size="sm" class="h-6 w-6 p-0">
+                                        <X class="h-3 w-3" />
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>
