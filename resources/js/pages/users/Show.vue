@@ -107,23 +107,7 @@
 <script setup lang="ts">
 import { edit as usersEdit, index as usersIndex } from '@/routes/users';
 import { Link } from '@inertiajs/vue3';
-
-interface Role {
-    id: number;
-    name: string;
-    display_name: string;
-    description?: string;
-}
-
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    email_verified_at: string | null;
-    created_at: string;
-    updated_at: string;
-    roles: Role[];
-}
+import type { User } from '@/types/user';
 
 defineProps<{
     user: User;

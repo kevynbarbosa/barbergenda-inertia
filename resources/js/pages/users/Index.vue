@@ -116,38 +116,7 @@ import { create as usersCreate, destroy as usersDestroy, edit as usersEdit, show
 import { Link, router } from '@inertiajs/vue3';
 import { Edit, Eye, MoreHorizontal, Plus, Search, Trash2, X } from 'lucide-vue-next';
 import { ref } from 'vue';
-
-interface Role {
-    id: number;
-    name: string;
-    display_name: string;
-    description?: string;
-}
-
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    email_verified_at: string | null;
-    created_at: string;
-    updated_at: string;
-    roles: Role[];
-}
-
-interface PaginatedUsers {
-    current_page: number;
-    data: User[];
-    first_page_url: string;
-    from: number;
-    last_page: number;
-    last_page_url: string;
-    next_page_url: string | null;
-    path: string;
-    per_page: number;
-    prev_page_url: string | null;
-    to: number;
-    total: number;
-}
+import type { PaginatedUsers } from '@/types/user';
 
 const props = defineProps<{
     users: PaginatedUsers;

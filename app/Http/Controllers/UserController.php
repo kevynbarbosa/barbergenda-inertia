@@ -40,7 +40,7 @@ class UserController extends Controller
     {
         $roles = Role::all();
 
-        return Inertia::render('users/Create', [
+        return Inertia::render('users/Form', [
             'roles' => $roles,
         ]);
     }
@@ -53,7 +53,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        if ($request->has('roles')) {
+        if ($request->has('roles') && is_array($request->roles)) {
             $user->roles()->sync($request->roles);
         }
 
@@ -75,7 +75,7 @@ class UserController extends Controller
         $user->load('roles');
         $roles = Role::all();
 
-        return Inertia::render('users/Edit', [
+        return Inertia::render('users/Form', [
             'user' => $user,
             'roles' => $roles,
         ]);
@@ -94,7 +94,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        if ($request->has('roles')) {
+        if ($request->has('roles') && is_array($request->roles)) {
             $user->roles()->sync($request->roles);
         }
 
