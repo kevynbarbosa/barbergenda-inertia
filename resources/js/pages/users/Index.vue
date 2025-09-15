@@ -73,12 +73,6 @@
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
                                             <DropdownMenuItem as-child>
-                                                <Link :href="usersShow.url(user.id)" class="flex cursor-default items-center">
-                                                    <Eye class="mr-2 h-4 w-4" />
-                                                    Ver
-                                                </Link>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem as-child>
                                                 <Link :href="usersEdit.url(user.id)" class="flex cursor-default items-center">
                                                     <Edit class="mr-2 h-4 w-4" />
                                                     Editar
@@ -112,9 +106,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatDate } from '@/lib/date-utils';
-import { create as usersCreate, destroy as usersDestroy, edit as usersEdit, show as usersShow } from '@/routes/users';
+import { create as usersCreate, destroy as usersDestroy, edit as usersEdit } from '@/routes/users';
 import { Link, router } from '@inertiajs/vue3';
-import { Edit, Eye, MoreHorizontal, Plus, Search, Trash2, X } from 'lucide-vue-next';
+import { Edit, MoreHorizontal, Plus, Search, Trash2, X } from 'lucide-vue-next';
 import { ref } from 'vue';
 import type { PaginatedUsers } from '@/types/user';
 

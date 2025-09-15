@@ -61,14 +61,6 @@ class UserController extends Controller
             ->with('success', 'Usuário criado com sucesso.');
     }
 
-    public function show(User $user): Response
-    {
-        $user->load('roles');
-
-        return Inertia::render('users/Show', [
-            'user' => $user,
-        ]);
-    }
 
     public function edit(User $user): Response
     {

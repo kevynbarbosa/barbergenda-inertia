@@ -40,14 +40,6 @@ class RoleController extends Controller
             ->with('success', 'Role criada com sucesso.');
     }
 
-    public function show(Role $role): Response
-    {
-        $role->loadCount('users');
-
-        return Inertia::render('roles/Show', [
-            'role' => $role,
-        ]);
-    }
 
     public function edit(Role $role): Response
     {

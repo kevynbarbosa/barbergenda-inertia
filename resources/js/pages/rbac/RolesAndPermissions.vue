@@ -40,12 +40,6 @@
                             </div>
                             <div class="ml-4 flex gap-2">
                                 <Link
-                                    :href="rolesShow.url(role.id)"
-                                    class="text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-                                >
-                                    Ver
-                                </Link>
-                                <Link
                                     :href="rolesEdit.url(role.id)"
                                     class="text-sm font-medium text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
                                 >
@@ -67,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { create as rolesCreate, destroy as rolesDestroy, edit as rolesEdit, show as rolesShow } from '@/routes/roles';
+import { create as rolesCreate, destroy as rolesDestroy, edit as rolesEdit } from '@/routes/roles';
 import { Link, router } from '@inertiajs/vue3';
 
 interface Permission {
