@@ -1,0 +1,4 @@
+/* Empty file - we'll rebuild the CSS and it should work now */
+.teste {
+    @apply bg-green-700 text-red-500;
+}
