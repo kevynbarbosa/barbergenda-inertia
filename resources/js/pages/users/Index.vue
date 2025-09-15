@@ -1,5 +1,7 @@
 <template>
     <div class="container mx-auto max-w-7xl p-4">
+        <!-- Hidden div to force Tailwind to include badge colors -->
+        <div class="hidden bg-green-100 bg-amber-100 bg-purple-100 bg-blue-100 bg-indigo-100 bg-slate-100 text-green-800 text-amber-800 text-purple-800 text-blue-800 text-indigo-800 text-slate-800 border-green-300 border-amber-300 border-purple-300 border-blue-300 border-indigo-300 border-slate-300"></div>
         <div class="mb-6 flex items-center justify-between">
             <div>
                 <h1 class="mb-2 text-3xl font-bold">Usuários</h1>
@@ -47,28 +49,14 @@
                             <TableCell class="font-medium">{{ user.name }}</TableCell>
                             <TableCell>{{ user.email }}</TableCell>
                             <TableCell>
-                                <span
-                                    v-if="user.email_verified_at"
-                                    class="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs text-green-800 dark:bg-green-900/30 dark:text-green-200"
-                                >
-                                    Verificado
-                                </span>
-                                <span
-                                    v-else
-                                    class="inline-flex items-center rounded-full bg-yellow-100 px-2 py-1 text-xs text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200"
-                                >
-                                    Não verificado
-                                </span>
+                                <Badge v-if="user.email_verified_at" variant="verified"> Verificado </Badge>
+                                <Badge v-else variant="unverified"> Não verificado </Badge>
                             </TableCell>
                             <TableCell>
                                 <div v-if="user.roles && user.roles.length > 0" class="flex flex-wrap gap-1">
-                                    <span
-                                        v-for="role in user.roles"
-                                        :key="role.id"
-                                        class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-200"
-                                    >
+                                    <Badge v-for="role in user.roles" :key="role.id" :variant="getRoleBadgeVariant(role.name)">
                                         {{ role.display_name }}
-                                    </span>
+                                    </Badge>
                                 </div>
                                 <span v-else class="text-xs text-gray-400 dark:text-gray-500">-</span>
                             </TableCell>
@@ -114,11 +102,13 @@
 </template>
 
 <script setup lang="ts">
+import DataTablePagination from '@/components/DataTablePagination.vue';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import DataTablePagination from '@/components/DataTablePagination.vue';
+import { formatDate } from '@/lib/date-utils';
 import { create as usersCreate, destroy as usersDestroy, edit as usersEdit, show as usersShow } from '@/routes/users';
 import { Link, router } from '@inertiajs/vue3';
 import { Edit, Eye, MoreHorizontal, Search, Trash2, X } from 'lucide-vue-next';
@@ -165,12 +155,20 @@ const props = defineProps<{
 
 const searchTerm = ref(props.filters.search || '');
 
-const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-    });
+const getRoleBadgeVariant = (roleName: string): 'admin' | 'moderator' | 'user' | 'role' => {
+    switch (roleName.toLowerCase()) {
+        case 'admin':
+        case 'administrator':
+            return 'admin';
+        case 'moderator':
+        case 'mod':
+            return 'moderator';
+        case 'user':
+        case 'member':
+            return 'user';
+        default:
+            return 'role';
+    }
 };
 
 const deleteUser = (userId: number) => {
@@ -178,7 +176,6 @@ const deleteUser = (userId: number) => {
         router.delete(usersDestroy.url(userId));
     }
 };
-
 
 // Função debounce simples
 const debounce = (func: (...args: any[]) => void, wait: number) => {
