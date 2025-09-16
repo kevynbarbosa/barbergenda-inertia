@@ -65,30 +65,24 @@
 
                     <!-- Permissões por Módulo -->
                     <div>
-                        <!-- Layout Mobile -->
-                        <div v-if="isMobile" class="lg:hidden">
-                            <MobileTabs
-                                v-if="selectedModule"
-                                :modules="modules"
-                                :selected-module="selectedModule"
-                                :get-enabled-count="getEnabledCount"
-                                @module-select="handleModuleSelect"
-                                @permission-toggle="handlePermissionToggle"
-                            />
-                        </div>
-
-                        <!-- Layout Desktop -->
-                        <div v-else class="hidden gap-6 lg:grid lg:grid-cols-5">
-                            <div class="col-span-2">
+                        <!-- Layout Responsivo -->
+                        <div class="grid gap-6 lg:grid-cols-5">
+                            <!-- ModuleList agora se adapta automaticamente para mobile/desktop -->
+                            <div class="lg:col-span-2">
                                 <ModuleList
                                     :modules="modules"
                                     :selected-module="selectedModule"
                                     :get-enabled-count="getEnabledCount"
                                     @module-select="handleModuleSelect"
+                                    @permission-toggle="handlePermissionToggle"
                                 />
                             </div>
-                            <div class="col-span-3">
-                                <PermissionsList :module="selectedModule" @permission-toggle="handlePermissionToggle" />
+                            <!-- PermissionsList só aparece no desktop -->
+                            <div class="hidden lg:block lg:col-span-3">
+                                <PermissionsList
+                                    :module="selectedModule"
+                                    @permission-toggle="handlePermissionToggle"
+                                />
                             </div>
                         </div>
                     </div>
@@ -108,7 +102,6 @@
 </template>
 
 <script setup lang="ts">
-import MobileTabs from '@/components/rbac/MobileTabs.vue';
 import ModuleList from '@/components/rbac/ModuleList.vue';
 import PermissionsList from '@/components/rbac/PermissionsList.vue';
 import type { Module } from '@/components/rbac/types';
@@ -117,7 +110,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { useMobile } from '@/composables/useMobile';
 import { index as rolesIndex, store as rolesStore, update as rolesUpdate } from '@/routes/roles';
 import type { Permission } from '@/types/permission';
 import type { Role } from '@/types/role';
@@ -130,7 +122,6 @@ const props = defineProps<{
 }>();
 
 const isEditing = computed(() => !!props.role);
-const { isMobile } = useMobile();
 
 // Converter permissões para o formato esperado pelos componentes RBAC
 const createModules = () => {
