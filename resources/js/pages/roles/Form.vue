@@ -67,9 +67,6 @@
                     <div>
                         <ModuleList
                             :modules="modules"
-                            :selected-module="selectedModule"
-                            :get-enabled-count="getEnabledCount"
-                            @module-select="handleModuleSelect"
                             @permission-toggle="handlePermissionToggle"
                         />
                     </div>
@@ -90,7 +87,6 @@
 
 <script setup lang="ts">
 import ModuleList from '@/components/rbac/ModuleList.vue';
-import type { Module } from '@/components/rbac/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -144,8 +140,6 @@ const createModules = () => {
 
 const modules = ref(createModules());
 
-const selectedModule = ref<Module | null>(modules.value[0] || null);
-
 const form = useForm({
     name: props.role?.name || '',
     display_name: props.role?.display_name || '',
@@ -153,20 +147,6 @@ const form = useForm({
     permissions: props.role?.permissions?.map((p) => p.name) || ([] as string[]),
 });
 
-const getEnabledCount = (module: Module): number => {
-    return module.permissions.filter((permission) => permission.enabled).length;
-};
-
-const handleModuleSelect = (moduleOrId: Module | string) => {
-    if (typeof moduleOrId === 'string') {
-        const module = modules.value.find((m) => m.id === moduleOrId);
-        if (module) {
-            selectedModule.value = module;
-        }
-    } else {
-        selectedModule.value = moduleOrId;
-    }
-};
 
 const handlePermissionToggle = (permissionId: string) => {
     // Encontrar e atualizar a permissão no módulo

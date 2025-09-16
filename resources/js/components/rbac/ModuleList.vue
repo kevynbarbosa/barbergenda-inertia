@@ -95,40 +95,40 @@ import type { Module } from './types';
 
 interface ModuleListProps {
     modules: Module[];
-    selectedModule: Module;
-    getEnabledCount: (module: Module) => number;
 }
 
 const props = defineProps<ModuleListProps>();
 
 const emit = defineEmits<{
-    moduleSelect: [module: Module];
     permissionToggle: [permissionId: string];
 }>();
 
 const { isMobile } = useMobile();
 
+// Estado interno do módulo selecionado
+const selectedModule = ref<Module>(props.modules[0] || {} as Module);
+
+// Função para calcular permissões habilitadas
+const getEnabledCount = (module: Module): number => {
+    return module.permissions.filter((permission) => permission.enabled).length;
+};
+
 // Desktop handlers
 const handleModuleSelect = (module: Module) => {
-    emit('moduleSelect', module);
+    selectedModule.value = module;
 };
 
 // Mobile tabs logic
 const scrollContainerRef = ref<HTMLDivElement | null>(null);
-const currentModuleId = ref(props.selectedModule.id);
+const currentModuleId = ref(selectedModule.value.id);
 const showLeftIndicator = ref(false);
 const showRightIndicator = ref(false);
 
-// Watchers para sincronizar com a mudança externa do selectedModule
-watch(() => props.selectedModule.id, (newId) => {
-    currentModuleId.value = newId;
-});
-
-// Watcher para notificar mudanças de aba
+// Watcher para sincronizar mudanças de aba no mobile
 watch(currentModuleId, (newId) => {
     const module = props.modules.find(m => m.id === newId);
     if (module) {
-        emit('moduleSelect', module);
+        selectedModule.value = module;
     }
 });
 
