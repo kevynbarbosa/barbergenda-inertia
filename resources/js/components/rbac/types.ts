@@ -1,7 +1,6 @@
-export interface Permission {
-  id: string
-  name: string
-  description: string
+import type { Permission as BasePermission } from '@/types/permission';
+
+export interface Permission extends BasePermission {
   enabled: boolean
 }
 

@@ -63,21 +63,8 @@
 <script setup lang="ts">
 import { create as rolesCreate, destroy as rolesDestroy, edit as rolesEdit } from '@/routes/roles';
 import { Link, router } from '@inertiajs/vue3';
-
-interface Permission {
-    id: number;
-    name: string;
-    display_name: string | null;
-    description: string | null;
-}
-
-interface Role {
-    id: number;
-    name: string;
-    display_name: string | null;
-    description: string | null;
-    permissions: Permission[];
-}
+import type { Permission } from '@/types/permission';
+import type { Role } from '@/types/role';
 
 defineProps<{
     roles: Role[];

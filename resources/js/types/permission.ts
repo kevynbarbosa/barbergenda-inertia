@@ -1,19 +1,20 @@
-import type { Permission } from './permission';
-
-export interface Role {
+export interface Permission {
     id: number;
     name: string;
+    module: string;
     display_name: string;
     description?: string;
     created_at: string;
     updated_at: string;
-    users_count?: number;
-    permissions?: Permission[];
 }
 
-export interface RoleFormData {
+export interface PermissionFormData {
     name: string;
+    module: string;
     display_name: string;
     description?: string;
-    permissions?: string[];
+}
+
+export interface PermissionsByModule {
+    [module: string]: Permission[];
 }

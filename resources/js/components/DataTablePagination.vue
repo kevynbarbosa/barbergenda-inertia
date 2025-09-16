@@ -1,27 +1,17 @@
 <template>
-    <div v-if="data.last_page > 1" class="border-t border-gray-200 px-6 py-4 dark:border-gray-700">
+    <div v-if="data.last_page > 1" class="px-6 py-4">
         <Pagination>
             <PaginationList>
-                <PaginationPrev
-                    :href="data.prev_page_url"
-                    :disabled="!data.prev_page_url"
-                />
+                <PaginationPrev :href="data.prev_page_url" :disabled="!data.prev_page_url" />
 
                 <template v-for="page in paginationPages" :key="page">
-                    <PaginationListItem
-                        v-if="typeof page === 'number'"
-                        :href="buildPageUrl(page)"
-                        :active="page === data.current_page"
-                    >
+                    <PaginationListItem v-if="typeof page === 'number'" :href="buildPageUrl(page)" :active="page === data.current_page">
                         {{ page }}
                     </PaginationListItem>
                     <PaginationEllipsis v-else />
                 </template>
 
-                <PaginationNext
-                    :href="data.next_page_url"
-                    :disabled="!data.next_page_url"
-                />
+                <PaginationNext :href="data.next_page_url" :disabled="!data.next_page_url" />
             </PaginationList>
         </Pagination>
     </div>
