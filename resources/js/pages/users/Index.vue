@@ -78,6 +78,10 @@
                                                     Editar
                                                 </Link>
                                             </DropdownMenuItem>
+                                            <DropdownMenuItem @click="viewUserPermissions(user)" class="flex cursor-default items-center">
+                                                <Shield class="mr-2 h-4 w-4" />
+                                                Ver Permissões
+                                            </DropdownMenuItem>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem @click="deleteUser(user.id)" class="text-red-600 focus:text-red-600 dark:text-red-400">
                                                 <Trash2 class="mr-2 h-4 w-4" />
@@ -94,6 +98,60 @@
                 <DataTablePagination :data="users" />
             </CardContent>
         </Card>
+
+        <!-- Modal de Permissões -->
+        <Dialog v-model:open="showPermissionsModal">
+            <DialogContent class="max-w-4xl max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                    <DialogTitle>Permissões do Usuário</DialogTitle>
+                    <DialogDescription v-if="selectedUser">
+                        Visualizando todas as permissões de <strong>{{ selectedUser.name }}</strong> ({{ selectedUser.email }})
+                    </DialogDescription>
+                </DialogHeader>
+
+                <div v-if="selectedUser" class="space-y-6">
+                    <!-- Roles do usuário -->
+                    <div v-if="selectedUser.roles && selectedUser.roles.length > 0">
+                        <h4 class="text-sm font-medium mb-3">Roles Atribuídas</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <Badge v-for="role in selectedUser.roles" :key="role.id" :variant="getRoleBadgeVariant(role.name)">
+                                {{ role.display_name }}
+                            </Badge>
+                        </div>
+                    </div>
+
+                    <!-- Permissões agrupadas por módulo -->
+                    <div v-if="userPermissions.length > 0">
+                        <h4 class="text-sm font-medium mb-3">Permissões por Módulo</h4>
+                        <div class="space-y-4">
+                            <div v-for="module in groupedPermissions" :key="module.name" class="border rounded-lg p-4">
+                                <h5 class="font-medium mb-3 flex items-center gap-2">
+                                    <Shield class="h-4 w-4" />
+                                    {{ module.name }}
+                                </h5>
+                                <div class="grid gap-2">
+                                    <div v-for="permission in module.permissions" :key="permission.id"
+                                         class="flex items-center justify-between p-2 bg-muted/30 rounded-md">
+                                        <div>
+                                            <span class="text-sm font-medium">{{ permission.display_name }}</span>
+                                            <p class="text-xs text-muted-foreground">{{ permission.description }}</p>
+                                        </div>
+                                        <Badge variant="outline" class="text-xs">{{ permission.name }}</Badge>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Caso não tenha permissões -->
+                    <div v-else class="text-center py-8 text-muted-foreground">
+                        <Shield class="h-12 w-12 mx-auto mb-2 opacity-50" />
+                        <p>Este usuário não possui permissões diretas.</p>
+                        <p class="text-sm">As permissões podem ser herdadas através das roles.</p>
+                    </div>
+                </div>
+            </DialogContent>
+        </Dialog>
     </div>
 </template>
 
@@ -103,14 +161,15 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatDate } from '@/lib/date-utils';
 import { create as usersCreate, destroy as usersDestroy, edit as usersEdit } from '@/routes/users';
 import { Link, router } from '@inertiajs/vue3';
-import { Edit, MoreHorizontal, Plus, Search, Trash2, X } from 'lucide-vue-next';
-import { ref } from 'vue';
-import type { PaginatedUsers } from '@/types/user';
+import { Edit, MoreHorizontal, Plus, Search, Shield, Trash2, X } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
+import type { PaginatedUsers, User } from '@/types/user';
 
 const props = defineProps<{
     users: PaginatedUsers;
@@ -120,6 +179,29 @@ const props = defineProps<{
 }>();
 
 const searchTerm = ref(props.filters.search || '');
+
+// Estado do modal de permissões
+const showPermissionsModal = ref(false);
+const selectedUser = ref<User | null>(null);
+const userPermissions = ref<any[]>([]);
+
+// Agrupar permissões por módulo
+const groupedPermissions = computed(() => {
+    const groups: Record<string, any[]> = {};
+
+    userPermissions.value.forEach(permission => {
+        const module = permission.module || 'Outros';
+        if (!groups[module]) {
+            groups[module] = [];
+        }
+        groups[module].push(permission);
+    });
+
+    return Object.entries(groups).map(([name, permissions]) => ({
+        name: name.charAt(0).toUpperCase() + name.slice(1),
+        permissions
+    }));
+});
 
 const getRoleBadgeVariant = (roleName: string): 'admin' | 'moderator' | 'user' | 'role' => {
     switch (roleName.toLowerCase()) {
@@ -134,6 +216,23 @@ const getRoleBadgeVariant = (roleName: string): 'admin' | 'moderator' | 'user' |
             return 'user';
         default:
             return 'role';
+    }
+};
+
+const viewUserPermissions = async (user: User) => {
+    selectedUser.value = user;
+    userPermissions.value = [];
+    showPermissionsModal.value = true;
+
+    // Buscar permissões do usuário via API
+    try {
+        const response = await fetch(`/api/users/${user.id}/permissions`);
+        if (response.ok) {
+            const data = await response.json();
+            userPermissions.value = data;
+        }
+    } catch (error) {
+        console.error('Erro ao buscar permissões:', error);
     }
 };
 

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
@@ -100,5 +101,19 @@ class UserController extends Controller
 
         return redirect()->route('users.index')
             ->with('success', 'Usuário deletado com sucesso.');
+    }
+
+    public function permissions(User $user): JsonResponse
+    {
+        // Buscar todas as permissões através das roles do usuário
+        $permissions = $user->roles()
+            ->with('permissions')
+            ->get()
+            ->pluck('permissions')
+            ->flatten()
+            ->unique('id')
+            ->values();
+
+        return response()->json($permissions);
     }
 }

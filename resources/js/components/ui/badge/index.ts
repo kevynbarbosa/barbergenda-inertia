@@ -18,7 +18,7 @@ export const badgeVariants = cva(
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         // Status variants
         verified:
-          "border-green-400 bg-green-200 text-green-700 dark:text-green-500 dark:bg-green-900/20",
+          "border-green-700 text-green-900 dark:text-green-500 dark:bg-green-900/20",
         unverified:
           "border-orange-400 bg-orange-200 text-orange-700 dark:text-amber-500 dark:bg-amber-900/20",
         // Role variants
