@@ -4,7 +4,7 @@
             <CardTitle>Módulos do Sistema</CardTitle>
         </CardHeader>
         <CardContent class="flex-1 overflow-hidden p-0">
-            <div class="h-full overflow-y-auto px-4">
+            <div class="h-full overflow-y-auto">
                 <div class="space-y-1 py-2">
                     <ModuleItem
                         v-for="module in modules"

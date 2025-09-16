@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-start justify-between rounded-lg border p-4 transition-colors hover:bg-muted/30">
+    <div class="flex items-start justify-between rounded-lg border p-2 transition-colors hover:bg-muted/30">
         <div class="mr-4 flex-1">
             <div class="flex items-center gap-2">
                 <h4 class="text-sm font-medium">{{ permission.display_name || permission.name }}</h4>

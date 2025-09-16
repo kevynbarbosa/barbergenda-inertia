@@ -78,7 +78,7 @@
                         </div>
 
                         <!-- Layout Desktop -->
-                        <div v-else class="hidden gap-6 p-6 lg:grid lg:grid-cols-5">
+                        <div v-else class="hidden gap-6 lg:grid lg:grid-cols-5">
                             <div class="col-span-2">
                                 <ModuleList
                                     :modules="modules"
@@ -93,7 +93,7 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-end gap-3 pt-6">
+                    <div class="flex justify-end gap-3">
                         <Button variant="outline" as-child>
                             <Link :href="rolesIndex.url()">Cancelar</Link>
                         </Button>
