@@ -14,16 +14,34 @@ class RoleController extends Controller
 {
     public function index(): Response
     {
-        $roles = Role::all();
+        $search = request('search');
 
-        return Inertia::render('rbac/RolesAndPermissions', [
+        $roles = Role::withCount('users')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'ILIKE', "%{$search}%")
+                          ->orWhere('display_name', 'ILIKE', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(15)
+            ->withQueryString();
+
+        return Inertia::render('roles/Index', [
             'roles' => $roles,
+            'filters' => [
+                'search' => $search,
+            ],
         ]);
     }
 
     public function create(): Response
     {
-        return Inertia::render('roles/Create');
+        $permissions = Permission::all();
+
+        return Inertia::render('roles/Form', [
+            'permissions' => $permissions,
+        ]);
     }
 
     public function store(StoreRoleRequest $request): RedirectResponse
@@ -44,13 +62,11 @@ class RoleController extends Controller
     public function edit(Role $role): Response
     {
         $role->load('permissions');
+        $permissions = Permission::all();
 
-        // Convert permissions to the format expected by the frontend
-        $roleData = $role->toArray();
-        $roleData['permissions'] = $role->permissions->pluck('name')->toArray();
-
-        return Inertia::render('roles/Edit', [
-            'role' => $roleData,
+        return Inertia::render('roles/Form', [
+            'role' => $role,
+            'permissions' => $permissions,
         ]);
     }
 

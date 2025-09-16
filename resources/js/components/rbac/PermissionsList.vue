@@ -1,5 +1,5 @@
 <template>
-    <Card class="flex h-full flex-col lg:max-h-[70vh]">
+    <Card class="flex h-full flex-col lg:h-[70vh]">
         <CardHeader class="flex-shrink-0">
             <CardTitle>Permissões - {{ module.name }}</CardTitle>
             <p class="text-sm text-muted-foreground">{{ module.description }}</p>
