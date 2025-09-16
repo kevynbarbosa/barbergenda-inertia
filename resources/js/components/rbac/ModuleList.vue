@@ -1,24 +1,36 @@
 <template>
     <!-- Desktop Layout -->
-    <Card v-if="!isMobile" class="flex h-full flex-col lg:sticky lg:top-4 lg:max-h-[70vh]">
-        <CardHeader class="flex-shrink-0">
-            <CardTitle>Módulos do Sistema</CardTitle>
-        </CardHeader>
-        <CardContent class="flex-1 overflow-hidden p-0">
-            <div class="h-full overflow-y-auto">
-                <div class="space-y-1 py-2">
-                    <ModuleItem
-                        v-for="module in modules"
-                        :key="module.id"
-                        :module="module"
-                        :is-selected="selectedModule.id === module.id"
-                        :enabled-count="getEnabledCount(module)"
-                        @select="handleModuleSelect"
-                    />
-                </div>
-            </div>
-        </CardContent>
-    </Card>
+    <div v-if="!isMobile" class="grid gap-6 lg:grid-cols-5">
+        <!-- ModuleList para desktop -->
+        <div class="lg:col-span-2">
+            <Card class="flex h-full flex-col lg:sticky lg:top-4 lg:max-h-[70vh]">
+                <CardHeader class="flex-shrink-0">
+                    <CardTitle>Módulos do Sistema</CardTitle>
+                </CardHeader>
+                <CardContent class="flex-1 overflow-hidden p-0">
+                    <div class="h-full overflow-y-auto">
+                        <div class="space-y-1 py-2">
+                            <ModuleItem
+                                v-for="module in modules"
+                                :key="module.id"
+                                :module="module"
+                                :is-selected="selectedModule.id === module.id"
+                                :enabled-count="getEnabledCount(module)"
+                                @select="handleModuleSelect"
+                            />
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
+        <!-- PermissionsList para desktop -->
+        <div class="lg:col-span-3">
+            <PermissionsList
+                :module="selectedModule"
+                @permission-toggle="handlePermissionToggle"
+            />
+        </div>
+    </div>
 
     <!-- Mobile Layout (Tabs) -->
     <div v-else class="space-y-4">

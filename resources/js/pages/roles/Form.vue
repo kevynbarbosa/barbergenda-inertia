@@ -65,26 +65,13 @@
 
                     <!-- Permissões por Módulo -->
                     <div>
-                        <!-- Layout Responsivo -->
-                        <div class="grid gap-6 lg:grid-cols-5">
-                            <!-- ModuleList agora se adapta automaticamente para mobile/desktop -->
-                            <div class="lg:col-span-2">
-                                <ModuleList
-                                    :modules="modules"
-                                    :selected-module="selectedModule"
-                                    :get-enabled-count="getEnabledCount"
-                                    @module-select="handleModuleSelect"
-                                    @permission-toggle="handlePermissionToggle"
-                                />
-                            </div>
-                            <!-- PermissionsList só aparece no desktop -->
-                            <div class="hidden lg:block lg:col-span-3">
-                                <PermissionsList
-                                    :module="selectedModule"
-                                    @permission-toggle="handlePermissionToggle"
-                                />
-                            </div>
-                        </div>
+                        <ModuleList
+                            :modules="modules"
+                            :selected-module="selectedModule"
+                            :get-enabled-count="getEnabledCount"
+                            @module-select="handleModuleSelect"
+                            @permission-toggle="handlePermissionToggle"
+                        />
                     </div>
 
                     <div class="flex justify-end gap-3">
@@ -103,7 +90,6 @@
 
 <script setup lang="ts">
 import ModuleList from '@/components/rbac/ModuleList.vue';
-import PermissionsList from '@/components/rbac/PermissionsList.vue';
 import type { Module } from '@/components/rbac/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
