@@ -10,7 +10,7 @@
                     v-for="permission in module.permissions"
                     :key="permission.id"
                     :permission="permission"
-                    :on-toggle="onPermissionToggle"
+                    @toggle="handlePermissionToggle"
                 />
             </div>
         </CardContent>
@@ -24,8 +24,15 @@ import type { Module } from './types';
 
 interface PermissionsListProps {
     module: Module;
-    onPermissionToggle: (permissionId: string) => void;
 }
 
 defineProps<PermissionsListProps>();
+
+const emit = defineEmits<{
+    permissionToggle: [permissionId: string];
+}>();
+
+const handlePermissionToggle = (permissionId: string) => {
+    emit('permissionToggle', permissionId);
+};
 </script>

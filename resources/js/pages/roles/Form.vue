@@ -65,16 +65,15 @@
 
                     <!-- Permissões por Módulo -->
                     <div>
-                        {{ form.permissions }}
                         <!-- Layout Mobile -->
                         <div v-if="isMobile" class="lg:hidden">
                             <MobileTabs
                                 v-if="selectedModule"
                                 :modules="modules"
                                 :selected-module="selectedModule"
-                                :on-module-select="handleModuleSelect"
-                                :on-permission-toggle="handlePermissionToggle"
                                 :get-enabled-count="getEnabledCount"
+                                @module-select="handleModuleSelect"
+                                @permission-toggle="handlePermissionToggle"
                             />
                         </div>
 
@@ -84,12 +83,12 @@
                                 <ModuleList
                                     :modules="modules"
                                     :selected-module="selectedModule"
-                                    :on-module-select="handleModuleSelect"
                                     :get-enabled-count="getEnabledCount"
+                                    @module-select="handleModuleSelect"
                                 />
                             </div>
                             <div class="col-span-3">
-                                <PermissionsList :module="selectedModule" :on-permission-toggle="handlePermissionToggle" />
+                                <PermissionsList :module="selectedModule" @permission-toggle="handlePermissionToggle" />
                             </div>
                         </div>
                     </div>
@@ -134,7 +133,7 @@ const isEditing = computed(() => !!props.role);
 const { isMobile } = useMobile();
 
 // Converter permissões para o formato esperado pelos componentes RBAC
-const modules = computed(() => {
+const createModules = () => {
     if (!props.permissions) return [];
 
     const permissionsByModule = props.permissions.reduce(
@@ -164,7 +163,9 @@ const modules = computed(() => {
             updated_at: permission.updated_at,
         })),
     }));
-});
+};
+
+const modules = ref(createModules());
 
 const selectedModule = ref<Module | null>(modules.value[0] || null);
 

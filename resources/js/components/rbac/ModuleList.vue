@@ -11,8 +11,8 @@
                         :key="module.id"
                         :module="module"
                         :is-selected="selectedModule.id === module.id"
-                        :on-select="onModuleSelect"
                         :enabled-count="getEnabledCount(module)"
+                        @select="handleModuleSelect"
                     />
                 </div>
             </div>
@@ -28,9 +28,16 @@ import type { Module } from './types';
 interface ModuleListProps {
     modules: Module[];
     selectedModule: Module;
-    onModuleSelect: (module: Module) => void;
     getEnabledCount: (module: Module) => number;
 }
 
 defineProps<ModuleListProps>();
+
+const emit = defineEmits<{
+    moduleSelect: [module: Module];
+}>();
+
+const handleModuleSelect = (module: Module) => {
+    emit('moduleSelect', module);
+};
 </script>

@@ -57,7 +57,7 @@
                 </div>
                 <Switch
                   :checked="permission.enabled"
-                  @update:checked="() => onPermissionToggle(permission.id)"
+                  @update:checked="() => handlePermissionToggle(permission.id)"
                   :aria-label="`Toggle ${permission.name}`"
                 />
               </div>
@@ -81,12 +81,15 @@ import ScrollIndicators from './ScrollIndicators.vue'
 interface MobileTabsProps {
   modules: Module[]
   selectedModule: Module
-  onModuleSelect: (moduleId: string) => void
-  onPermissionToggle: (permissionId: string) => void
   getEnabledCount: (module: Module) => number
 }
 
 const props = defineProps<MobileTabsProps>()
+
+const emit = defineEmits<{
+  moduleSelect: [moduleId: string];
+  permissionToggle: [permissionId: string];
+}>()
 const scrollContainerRef = ref<HTMLDivElement | null>(null)
 
 // Estado interno para controle da aba
@@ -103,8 +106,12 @@ watch(() => props.selectedModule.id, (newId) => {
 
 // Watcher para notificar mudanças de aba
 watch(currentModuleId, (newId) => {
-  props.onModuleSelect(newId)
+  emit('moduleSelect', newId)
 })
+
+const handlePermissionToggle = (permissionId: string) => {
+  emit('permissionToggle', permissionId)
+}
 
 // Função para verificar indicadores de scroll
 const checkScrollIndicators = () => {
