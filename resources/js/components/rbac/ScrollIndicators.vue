@@ -1,6 +1,7 @@
 <template>
   <!-- Indicador esquerdo -->
   <button
+    type="button"
     v-if="showLeft"
     @click="onScrollLeft"
     class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border rounded-full p-1 shadow-sm"
@@ -11,6 +12,7 @@
 
   <!-- Indicador direito -->
   <button
+    type="button"
     v-if="showRight"
     @click="onScrollRight"
     class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border rounded-full p-1 shadow-sm"

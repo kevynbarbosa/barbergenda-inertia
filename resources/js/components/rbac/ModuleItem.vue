@@ -1,5 +1,6 @@
 <template>
   <button
+    type="button"
     @click="() => handleSelect()"
     :class="`w-full text-left p-4 hover:bg-muted/50 transition-colors border-l-4 rounded-r-md ${
       isSelected ? 'border-l-primary bg-muted/50' : 'border-l-transparent'
