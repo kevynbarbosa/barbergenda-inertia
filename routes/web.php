@@ -16,6 +16,7 @@ Route::get('dashboard', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('users', UserController::class);
+    Route::get('users/{user}/permissions', [UserController::class, 'permissions'])->name('users.permissions');
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
 });

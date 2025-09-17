@@ -103,7 +103,16 @@ class UserController extends Controller
             ->with('success', 'Usuário deletado com sucesso.');
     }
 
-    public function permissions(User $user): JsonResponse
+    public function permissions(User $user): Response
+    {
+        $user->load('roles');
+
+        return Inertia::render('users/Permissions', [
+            'user' => $user,
+        ]);
+    }
+
+    public function apiPermissions(User $user): JsonResponse
     {
         // Buscar todas as permissões através das roles do usuário
         $permissions = $user->roles()
