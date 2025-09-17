@@ -107,8 +107,18 @@ class UserController extends Controller
     {
         $user->load('roles');
 
+        // Buscar todas as permissões através das roles do usuário
+        $permissions = $user->roles()
+            ->with('permissions')
+            ->get()
+            ->pluck('permissions')
+            ->flatten()
+            ->unique('id')
+            ->values();
+
         return Inertia::render('users/Permissions', [
             'user' => $user,
+            'permissions' => $permissions,
         ]);
     }
 
