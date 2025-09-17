@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto max-w-7xl p-4">
+    <ContainerDefault class="p-4">
         <div class="mb-8">
             <h1 class="text-3xl font-bold">Controle de Acesso</h1>
             <p class="mt-2 text-muted-foreground">Gerencie permissões por módulo do sistema</p>
@@ -31,10 +31,11 @@
                 <PermissionsList :module="selectedModule" :on-permission-toggle="handlePermissionToggle" />
             </div>
         </div>
-    </div>
+    </ContainerDefault>
 </template>
 
 <script setup lang="ts">
+import ContainerDefault from '@/components/ContainerDefault.vue';
 import { modules as moduleData } from '@/components/rbac/data';
 import MobileTabs from '@/components/rbac/MobileTabs.vue';
 import ModuleList from '@/components/rbac/ModuleList.vue';

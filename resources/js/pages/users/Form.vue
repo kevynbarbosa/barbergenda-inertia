@@ -65,7 +65,7 @@
 
                     <div>
                         <Label class="mb-3 block">Roles</Label>
-                        <div class="max-h-40 overflow-y-auto rounded-md border p-4">
+                        <div class="rounded-md border p-4">
                             <div class="space-y-3">
                                 <div v-for="role in roles" :key="role.id" class="flex items-start space-x-3">
                                     <Checkbox

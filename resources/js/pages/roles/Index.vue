@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto max-w-7xl space-y-6 p-6">
+    <ContainerDefault>
         <!-- Main Table Card -->
         <Card>
             <CardHeader>
@@ -91,10 +91,11 @@
                 <DataTablePagination :data="roles" />
             </CardContent>
         </Card>
-    </div>
+    </ContainerDefault>
 </template>
 
 <script setup lang="ts">
+import ContainerDefault from '@/components/ContainerDefault.vue';
 import DataTablePagination from '@/components/DataTablePagination.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

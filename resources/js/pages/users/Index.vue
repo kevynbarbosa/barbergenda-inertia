@@ -1,7 +1,7 @@
 <template>
-    <div class="container mx-auto max-w-7xl space-y-6 p-6">
+    <ContainerDefault>
         <!-- Main Table Card -->
-        <Card class="card-gradient-border">
+        <Card>
             <CardHeader>
                 <div class="flex flex-col gap-4">
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -106,10 +106,11 @@
                 <DataTablePagination :data="users" />
             </CardContent>
         </Card>
-    </div>
+    </ContainerDefault>
 </template>
 
 <script setup lang="ts">
+import ContainerDefault from '@/components/ContainerDefault.vue';
 import DataTablePagination from '@/components/DataTablePagination.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

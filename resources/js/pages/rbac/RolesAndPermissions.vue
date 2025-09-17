@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto max-w-7xl p-4">
+    <ContainerDefault class="p-4">
         <div class="mb-6 flex items-center justify-between">
             <div>
                 <h1 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Roles e Permissões</h1>
@@ -59,10 +59,11 @@
                 </div>
             </CardContent>
         </Card>
-    </div>
+    </ContainerDefault>
 </template>
 
 <script setup lang="ts">
+import ContainerDefault from '@/components/ContainerDefault.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { index as rolesIndex } from '@/routes/roles';
