@@ -47,7 +47,7 @@
                                 <TableHead>Nome</TableHead>
                                 <TableHead>Email</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead>Roles</TableHead>
+                                <TableHead>Perfis</TableHead>
                                 <TableHead>Data de Criação</TableHead>
                                 <TableHead class="text-right">Ações</TableHead>
                             </TableRow>

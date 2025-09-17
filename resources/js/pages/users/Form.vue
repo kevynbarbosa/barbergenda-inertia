@@ -64,7 +64,7 @@
                     </div>
 
                     <div>
-                        <Label class="mb-3 block">Roles</Label>
+                        <Label class="mb-3 block">Perfis</Label>
                         <div class="rounded-md border p-4">
                             <div class="space-y-3">
                                 <div v-for="role in roles" :key="role.id" class="flex items-start space-x-3">

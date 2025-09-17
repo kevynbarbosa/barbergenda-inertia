@@ -26,7 +26,7 @@ const mainNavItems: NavItem[] = [
     },
 
     {
-        title: 'Roles & Permissões',
+        title: 'Perfis & Permissões',
         href: rolesIndex.url(),
         icon: ShieldUser,
     },

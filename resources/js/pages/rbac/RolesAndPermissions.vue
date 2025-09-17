@@ -2,19 +2,19 @@
     <ContainerDefault class="p-4">
         <div class="mb-6 flex items-center justify-between">
             <div>
-                <h1 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Roles e Permissões</h1>
+                <h1 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Perfis e Permissões</h1>
                 <p class="text-gray-600 dark:text-gray-400">
                     Esta página foi reorganizada. Use o menu lateral para:
                 </p>
                 <ul class="mt-2 list-disc list-inside text-sm text-gray-600 dark:text-gray-400">
-                    <li><strong>Roles:</strong> para gerenciar roles do sistema</li>
-                    <li><strong>Usuários:</strong> para gerenciar usuários e suas roles</li>
+                    <li><strong>Perfis:</strong> para gerenciar perfis do sistema</li>
+                    <li><strong>Usuários:</strong> para gerenciar usuários e seus perfis</li>
                 </ul>
             </div>
             <div class="flex gap-2">
                 <Button as-child>
                     <Link :href="rolesIndex.url()">
-                        Ver Roles
+                        Ver Perfis
                     </Link>
                 </Button>
                 <Button variant="outline" as-child>
@@ -29,26 +29,26 @@
             <CardHeader>
                 <CardTitle>Reorganização da Interface</CardTitle>
                 <CardDescription>
-                    A gestão de roles e usuários foi reorganizada para uma melhor experiência
+                    A gestão de perfis e usuários foi reorganizada para uma melhor experiência
                 </CardDescription>
             </CardHeader>
             <CardContent>
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div class="rounded-lg border p-4">
-                        <h3 class="font-medium">Gestão de Roles</h3>
+                        <h3 class="font-medium">Gestão de Perfis</h3>
                         <p class="mt-1 text-sm text-muted-foreground">
-                            Crie, edite e gerencie roles com suas respectivas permissões
+                            Crie, edite e gerencie perfis com suas respectivas permissões
                         </p>
                         <Button class="mt-3" as-child>
                             <Link :href="rolesIndex.url()">
-                                Acessar Roles
+                                Acessar Perfis
                             </Link>
                         </Button>
                     </div>
                     <div class="rounded-lg border p-4">
                         <h3 class="font-medium">Gestão de Usuários</h3>
                         <p class="mt-1 text-sm text-muted-foreground">
-                            Gerencie usuários e atribua roles a eles
+                            Gerencie usuários e atribua perfis a eles
                         </p>
                         <Button class="mt-3" variant="outline" as-child>
                             <Link :href="usersIndex.url()">

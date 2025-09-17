@@ -20,9 +20,9 @@
         <Card>
             <CardContent class="p-6">
                 <div v-if="user" class="space-y-6">
-                    <!-- Roles do usuário -->
+                    <!-- Perfis do usuário -->
                     <div v-if="user.roles && user.roles.length > 0">
-                        <h4 class="text-sm font-medium mb-3">Roles Atribuídas</h4>
+                        <h4 class="text-sm font-medium mb-3">Perfis Atribuídos</h4>
                         <div class="flex flex-wrap gap-2">
                             <Badge v-for="role in user.roles" :key="role.id" variant="outline">
                                 {{ role.display_name }}
@@ -57,7 +57,7 @@
                     <div v-else class="text-center py-8 text-muted-foreground">
                         <Shield class="h-12 w-12 mx-auto mb-2 opacity-50" />
                         <p>Este usuário não possui permissões diretas.</p>
-                        <p class="text-sm">As permissões podem ser herdadas através das roles.</p>
+                        <p class="text-sm">As permissões podem ser herdadas através dos perfis.</p>
                     </div>
                 </div>
 

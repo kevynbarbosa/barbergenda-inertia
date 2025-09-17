@@ -6,9 +6,9 @@
                 <div class="flex flex-col gap-4">
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                            <CardTitle class="text-3xl">Lista de Roles</CardTitle>
+                            <CardTitle class="text-3xl">Lista de Perfis</CardTitle>
                             <CardDescription>
-                                Mostrando {{ roles.from || 0 }} a {{ roles.to || 0 }} de {{ roles.total || 0 }} roles
+                                Mostrando {{ roles.from || 0 }} a {{ roles.to || 0 }} de {{ roles.total || 0 }} perfis
                             </CardDescription>
                         </div>
                         <Button as-child class="w-fit">
