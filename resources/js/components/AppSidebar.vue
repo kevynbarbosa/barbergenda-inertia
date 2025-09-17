@@ -74,8 +74,8 @@ const footerNavItems: NavItem[] = [
             <NavFooter :items="footerNavItems" />
             <SidebarSeparator />
             <div class="px-2 py-2">
-                <div class="flex items-center justify-between">
-                    <span class="text-sm text-muted-foreground">Tema</span>
+                <div class="flex items-center justify-between group-data-[collapsible=icon]:justify-center">
+                    <span class="text-sm text-muted-foreground group-data-[collapsible=icon]:hidden">Tema</span>
                     <ThemeToggle />
                 </div>
             </div>

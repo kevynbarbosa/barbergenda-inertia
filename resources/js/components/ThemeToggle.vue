@@ -1,12 +1,12 @@
 <template>
   <div class="flex items-center gap-2">
-    <Sun :size="16" class="text-muted-foreground" />
-    <Switch 
-      :model-value="isDarkMode" 
-      @update:model-value="handleSwitchChange" 
-      aria-label="Toggle dark mode" 
+    <Sun :size="16" class="text-muted-foreground group-data-[collapsible=icon]:hidden" />
+    <Switch
+      :model-value="isDarkMode"
+      @update:model-value="handleSwitchChange"
+      aria-label="Toggle dark mode"
     />
-    <Moon :size="16" class="text-muted-foreground" />
+    <Moon :size="16" class="text-muted-foreground group-data-[collapsible=icon]:hidden" />
   </div>
 </template>
 
