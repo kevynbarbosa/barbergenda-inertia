@@ -1,7 +1,7 @@
 <template>
     <div class="container mx-auto max-w-7xl space-y-6 p-6">
         <!-- Main Table Card -->
-        <Card>
+        <Card class="card-gradient-border">
             <CardHeader>
                 <div class="flex flex-col gap-4">
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

@@ -1,4 +1,8 @@
-/* Empty file - we'll rebuild the CSS and it should work now */
-.teste {
-    @apply bg-green-700 text-red-500;
+/* Gradiente de borda superior com gradiente */
+.card-gradient-border {
+    @apply relative overflow-hidden;
+}
+
+.card-gradient-border::before {
+    @apply absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-background via-primary to-background content-[''];
 }
