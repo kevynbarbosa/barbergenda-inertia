@@ -2,7 +2,6 @@ import type { Permission } from './permission';
 
 export interface Role {
     id: number;
-    name: string;
     display_name: string;
     description?: string;
     created_at: string;
@@ -12,7 +11,6 @@ export interface Role {
 }
 
 export interface RoleFormData {
-    name: string;
     display_name: string;
     description?: string;
     permissions?: string[];

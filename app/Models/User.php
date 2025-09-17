@@ -54,13 +54,13 @@ class User extends Authenticatable
 
     public function hasRole(string $role): bool
     {
-        return $this->roles()->where('name', $role)->exists();
+        return $this->roles()->where('display_name', $role)->exists();
     }
 
     public function assignRole(string|Role $role): void
     {
         if (is_string($role)) {
-            $role = Role::where('name', $role)->firstOrFail();
+            $role = Role::where('display_name', $role)->firstOrFail();
         }
 
         if (!$this->roles->contains($role)) {
@@ -71,7 +71,7 @@ class User extends Authenticatable
     public function removeRole(string|Role $role): void
     {
         if (is_string($role)) {
-            $role = Role::where('name', $role)->firstOrFail();
+            $role = Role::where('display_name', $role)->firstOrFail();
         }
 
         $this->roles()->detach($role);

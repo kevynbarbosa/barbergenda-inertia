@@ -15,26 +15,23 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $adminRole = Role::firstOrCreate(
-            ['name' => 'admin'],
+            ['display_name' => 'Administrador'],
             [
-                'display_name' => 'Administrador',
-                'description' => 'Role com acesso total ao sistema',
+                'description' => 'Perfil com acesso total ao sistema',
             ]
         );
 
         $managerRole = Role::firstOrCreate(
-            ['name' => 'manager'],
+            ['display_name' => 'Gerente'],
             [
-                'display_name' => 'Gerente',
-                'description' => 'Role com acesso de gerenciamento',
+                'description' => 'Perfil com acesso de gerenciamento',
             ]
         );
 
         $userRole = Role::firstOrCreate(
-            ['name' => 'user'],
+            ['display_name' => 'Usuário'],
             [
-                'display_name' => 'Usuário',
-                'description' => 'Role básica de usuário',
+                'description' => 'Perfil básico de usuário',
             ]
         );
 

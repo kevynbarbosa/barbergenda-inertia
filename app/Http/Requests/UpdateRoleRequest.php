@@ -22,7 +22,6 @@ class UpdateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'unique:roles,name,' . $this->route('role')->id, 'regex:/^[a-z0-9_]+$/'],
             'display_name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:1000'],
             'permissions' => ['nullable', 'array'],
@@ -33,10 +32,7 @@ class UpdateRoleRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'O nome da role é obrigatório.',
-            'name.unique' => 'Este nome de role já existe.',
-            'name.regex' => 'O nome deve conter apenas letras minúsculas, números e underscores.',
-            'display_name.required' => 'O nome de exibição é obrigatório.',
+            'display_name.required' => 'O nome do perfil é obrigatório.',
             'permissions.*.exists' => 'Uma das permissões selecionadas não existe.',
         ];
     }

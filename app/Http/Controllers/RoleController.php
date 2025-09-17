@@ -18,10 +18,7 @@ class RoleController extends Controller
 
         $roles = Role::withCount('users')
             ->when($search, function ($query, $search) {
-                $query->where(function ($query) use ($search) {
-                    $query->where('name', 'ILIKE', "%{$search}%")
-                          ->orWhere('display_name', 'ILIKE', "%{$search}%");
-                });
+                $query->where('display_name', 'ILIKE', "%{$search}%");
             })
             ->latest()
             ->paginate(15)
@@ -46,7 +43,7 @@ class RoleController extends Controller
 
     public function store(StoreRoleRequest $request): RedirectResponse
     {
-        $role = Role::create($request->only(['name', 'display_name', 'description']));
+        $role = Role::create($request->only(['display_name', 'description']));
 
         // Sync permissions if provided
         if ($request->has('permissions') && is_array($request->permissions)) {
@@ -55,7 +52,7 @@ class RoleController extends Controller
         }
 
         return redirect()->route('roles.index')
-            ->with('success', 'Role criada com sucesso.');
+            ->with('success', 'Perfil criado com sucesso.');
     }
 
 
@@ -72,7 +69,7 @@ class RoleController extends Controller
 
     public function update(UpdateRoleRequest $request, Role $role): RedirectResponse
     {
-        $role->update($request->only(['name', 'display_name', 'description']));
+        $role->update($request->only(['display_name', 'description']));
 
         // Sync permissions if provided
         if ($request->has('permissions') && is_array($request->permissions)) {
@@ -81,7 +78,7 @@ class RoleController extends Controller
         }
 
         return redirect()->route('roles.index')
-            ->with('success', 'Role atualizada com sucesso.');
+            ->with('success', 'Perfil atualizado com sucesso.');
     }
 
     public function destroy(Role $role): RedirectResponse
@@ -95,6 +92,16 @@ class RoleController extends Controller
 
         return redirect()->route('roles.index')
             ->with('success', 'Role deletada com sucesso.');
+    }
+
+    public function permissions(Role $role): Response
+    {
+        $role->load('permissions');
+
+        return Inertia::render('roles/Permissions', [
+            'role' => $role,
+            'permissions' => $role->permissions,
+        ]);
     }
 
     private function getPermissionIds(array $permissionNames): array

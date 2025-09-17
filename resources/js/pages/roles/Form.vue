@@ -18,24 +18,9 @@
                     <!-- Informações Básicas -->
                     <div class="space-y-6">
                         <h3 class="text-lg font-medium">Informações Básicas</h3>
-                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <Label for="name">Nome Técnico *</Label>
-                                <Input
-                                    id="name"
-                                    v-model="form.name"
-                                    type="text"
-                                    placeholder="ex: admin, manager, user"
-                                    :class="{ 'border-destructive': form.errors.name }"
-                                />
-                                <p class="mt-1 text-sm text-muted-foreground">Use apenas letras minúsculas, números e underscores</p>
-                                <div v-if="form.errors.name" class="mt-1 text-sm text-destructive">
-                                    {{ form.errors.name }}
-                                </div>
-                            </div>
-
-                            <div>
-                                <Label for="display_name">Nome de Exibição *</Label>
+                                <Label for="display_name">Nome do Perfil *</Label>
                                 <Input
                                     id="display_name"
                                     v-model="form.display_name"
@@ -141,7 +126,6 @@ const createModules = () => {
 const modules = ref(createModules());
 
 const form = useForm({
-    name: props.role?.name || '',
     display_name: props.role?.display_name || '',
     description: props.role?.description || '',
     permissions: props.role?.permissions?.map((p) => p.name) || ([] as string[]),

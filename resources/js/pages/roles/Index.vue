@@ -39,7 +39,6 @@
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Nome</TableHead>
-                                <TableHead>Nome Técnico</TableHead>
                                 <TableHead>Descrição</TableHead>
                                 <TableHead>Usuários</TableHead>
                                 <TableHead>Data de Criação</TableHead>
@@ -48,10 +47,7 @@
                         </TableHeader>
                         <TableBody>
                             <TableRow v-for="role in roles.data" :key="role.id">
-                                <TableCell class="font-medium">{{ role.display_name || role.name }}</TableCell>
-                                <TableCell>
-                                    <code class="rounded bg-muted px-1.5 py-0.5 text-sm">{{ role.name }}</code>
-                                </TableCell>
+                                <TableCell class="font-medium">{{ role.display_name }}</TableCell>
                                 <TableCell>
                                     <span v-if="role.description" class="text-sm">{{ role.description }}</span>
                                     <span v-else class="text-xs text-muted-foreground">-</span>
@@ -73,6 +69,12 @@
                                                 <Link :href="rolesEdit.url(role.id)" class="flex cursor-default items-center">
                                                     <Edit class="mr-2 h-4 w-4" />
                                                     Editar
+                                                </Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem as-child>
+                                                <Link :href="rolesPermissions.url(role.id)" class="flex cursor-default items-center">
+                                                    <Shield class="mr-2 h-4 w-4" />
+                                                    Ver Permissões
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuSeparator />
@@ -104,16 +106,15 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatDate } from '@/lib/date-utils';
-import { create as rolesCreate, destroy as rolesDestroy, edit as rolesEdit } from '@/routes/roles';
+import { create as rolesCreate, destroy as rolesDestroy, edit as rolesEdit, permissions as rolesPermissions } from '@/routes/roles';
 import { Link, router } from '@inertiajs/vue3';
-import { Edit, MoreHorizontal, Plus, Search, Trash2, X } from 'lucide-vue-next';
+import { Edit, MoreHorizontal, Plus, Search, Shield, Trash2, X } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 interface PaginatedRoles {
     current_page: number;
     data: Array<{
         id: number;
-        name: string;
         display_name: string;
         description?: string;
         users_count?: number;
