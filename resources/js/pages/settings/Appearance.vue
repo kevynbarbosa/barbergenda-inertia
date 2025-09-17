@@ -2,17 +2,36 @@
 import { Head } from '@inertiajs/vue3';
 
 import AppearanceTabs from '@/components/AppearanceTabs.vue';
-import HeadingSmall from '@/components/HeadingSmall.vue';
-import SettingsLayout from '@/layouts/settings/Layout.vue';
+import ContainerDefault from '@/components/ContainerDefault.vue';
+import SettingsNav from '@/components/SettingsNav.vue';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 </script>
 
 <template>
     <Head title="Appearance settings" />
 
-    <SettingsLayout>
+    <ContainerDefault>
+        <!-- Header -->
         <div class="space-y-6">
-            <HeadingSmall title="Appearance settings" description="Update your account's appearance settings" />
-            <AppearanceTabs />
+            <div>
+                <h1 class="text-3xl font-bold">Configurações</h1>
+                <p class="text-muted-foreground">Gerencie suas configurações de perfil e conta</p>
+            </div>
+
+            <SettingsNav>
+                <!-- Appearance Settings Card -->
+                <Card>
+                <CardHeader>
+                    <CardTitle>Configurações de Aparência</CardTitle>
+                    <CardDescription>
+                        Atualize as configurações de aparência da sua conta
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <AppearanceTabs />
+                </CardContent>
+            </Card>
+            </SettingsNav>
         </div>
-    </SettingsLayout>
+    </ContainerDefault>
 </template>
