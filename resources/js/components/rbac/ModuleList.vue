@@ -1,9 +1,9 @@
 <template>
     <!-- Desktop Layout -->
-    <div v-if="!isMobile" class="grid gap-6 lg:grid-cols-5">
+    <div v-if="!isMobile" class="grid gap-2 lg:grid-cols-5">
         <!-- ModuleList para desktop -->
         <div class="lg:col-span-2">
-            <Card class="flex h-full flex-col lg:sticky lg:top-4 lg:max-h-[70vh]">
+            <Card class="flex h-full flex-col lg:sticky lg:top-1 lg:max-h-[70vh]">
                 <CardHeader class="flex-shrink-0">
                     <CardTitle>Módulos do Sistema</CardTitle>
                 </CardHeader>
@@ -25,10 +25,7 @@
         </div>
         <!-- PermissionsList para desktop -->
         <div class="lg:col-span-3">
-            <PermissionsList
-                :module="selectedModule"
-                @permission-toggle="handlePermissionToggle"
-            />
+            <PermissionsList :module="selectedModule" @permission-toggle="handlePermissionToggle" />
         </div>
     </div>
 
@@ -46,10 +43,10 @@
                 <!-- Container de scroll das abas -->
                 <div
                     ref="scrollContainerRef"
-                    class="overflow-x-auto px-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                    class="overflow-x-auto px-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                     @scroll="checkScrollIndicators"
                 >
-                    <TabsList class="flex w-max h-auto p-1 mb-4 min-w-full">
+                    <TabsList class="mb-4 flex h-auto w-max min-w-full p-1">
                         <TabsTrigger
                             v-for="module in modules"
                             :key="module.id"
@@ -58,7 +55,7 @@
                         >
                             <div class="flex flex-col items-center gap-1">
                                 <span class="font-medium">{{ module.name }}</span>
-                                <Badge variant="secondary" class="text-xs px-1.5 py-0.5">
+                                <Badge variant="secondary" class="px-1.5 py-0.5 text-xs">
                                     {{ getEnabledCount(module) }}/{{ module.permissions.length }}
                                 </Badge>
                             </div>
@@ -67,27 +64,19 @@
                 </div>
             </div>
 
-            <TabsContent
-                v-for="module in modules"
-                :key="module.id"
-                :value="module.id"
-                class="mt-0"
-            >
-                <PermissionsList
-                    :module="module"
-                    @permission-toggle="handlePermissionToggle"
-                />
+            <TabsContent v-for="module in modules" :key="module.id" :value="module.id" class="mt-0">
+                <PermissionsList :module="module" @permission-toggle="handlePermissionToggle" />
             </TabsContent>
         </Tabs>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useMobile } from '@/composables/useMobile';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import ModuleItem from './ModuleItem.vue';
 import PermissionsList from './PermissionsList.vue';
 import ScrollIndicators from './ScrollIndicators.vue';
@@ -106,7 +95,7 @@ const emit = defineEmits<{
 const { isMobile } = useMobile();
 
 // Estado interno do módulo selecionado
-const selectedModule = ref<Module>(props.modules[0] || {} as Module);
+const selectedModule = ref<Module>(props.modules[0] || ({} as Module));
 
 // Função para calcular permissões habilitadas
 const getEnabledCount = (module: Module): number => {
@@ -126,7 +115,7 @@ const showRightIndicator = ref(false);
 
 // Watcher para sincronizar mudanças de aba no mobile
 watch(currentModuleId, (newId) => {
-    const module = props.modules.find(m => m.id === newId);
+    const module = props.modules.find((m) => m.id === newId);
     if (module) {
         selectedModule.value = module;
     }
