@@ -6,3 +6,8 @@
 .card-gradient-border::before {
     @apply absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-background via-primary to-background content-[''];
 }
+
+/* Gradiente suave para o header da sidebar */
+.sidebar-header-gradient {
+    @apply bg-gradient-to-b from-primary/40 to-background;
+}
