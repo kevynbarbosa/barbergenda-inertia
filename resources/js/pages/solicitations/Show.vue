@@ -114,6 +114,11 @@
                         </div>
                     </div>
                 </div>
+
+                <Separator />
+
+                <!-- Stage Actions Section -->
+                <SolicitationStageActions :solicitation="solicitation" />
             </CardContent>
         </Card>
     </ContainerDefault>
@@ -121,6 +126,7 @@
 
 <script setup lang="ts">
 import ContainerDefault from '@/components/ContainerDefault.vue';
+import SolicitationStageActions from '@/components/solicitations/SolicitationStageActions.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
