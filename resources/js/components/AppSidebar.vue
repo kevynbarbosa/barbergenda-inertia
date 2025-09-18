@@ -6,10 +6,11 @@ import ThemeToggle from '@/components/ThemeToggle.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as rolesIndex } from '@/routes/roles';
+import { index as solicitationsIndex } from '@/routes/solicitations';
 import { index as usersIndex } from '@/routes/users';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, Inbox, LayoutGrid, ShieldUser, Users } from 'lucide-vue-next';
+import { BookOpen, FileText, Folder, Inbox, LayoutGrid, ShieldUser, Users } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -29,6 +30,12 @@ const mainNavItems: NavItem[] = [
         title: 'Perfis & Permissões',
         href: rolesIndex.url(),
         icon: ShieldUser,
+    },
+
+    {
+        title: 'Solicitações',
+        href: solicitationsIndex.url(),
+        icon: FileText,
     },
 
     {

@@ -7,14 +7,7 @@
 
         <!-- Layout Mobile -->
         <div v-if="isMobile" class="lg:hidden">
-            <MobileTabs
-                v-if="selectedModule"
-                :modules="modules"
-                :selected-module="selectedModule"
-                :on-module-select="handleModuleSelect"
-                :on-permission-toggle="handlePermissionToggle"
-                :get-enabled-count="getEnabledCount"
-            />
+            <p class="text-muted-foreground">Layout mobile em desenvolvimento</p>
         </div>
 
         <!-- Layout Desktop -->
@@ -37,7 +30,6 @@
 <script setup lang="ts">
 import ContainerDefault from '@/components/ContainerDefault.vue';
 import { modules as moduleData } from '@/components/rbac/data';
-import MobileTabs from '@/components/rbac/MobileTabs.vue';
 import ModuleList from '@/components/rbac/ModuleList.vue';
 import PermissionsList from '@/components/rbac/PermissionsList.vue';
 import type { Module } from '@/components/rbac/types';
