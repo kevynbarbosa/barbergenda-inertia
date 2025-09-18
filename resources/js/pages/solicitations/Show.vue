@@ -69,6 +69,11 @@
 
                 <Separator />
 
+                <!-- Stage Actions Section -->
+                <SolicitationStageActions :solicitation="solicitation" />
+
+                <Separator />
+
                 <!-- Histórico/Timeline (placeholder para futuras implementações) -->
                 <div class="space-y-4">
                     <div class="flex items-center gap-2">
@@ -101,11 +106,6 @@
                         </div>
                     </div>
                 </div>
-
-                <Separator />
-
-                <!-- Stage Actions Section -->
-                <SolicitationStageActions :solicitation="solicitation" />
             </CardContent>
         </Card>
     </ContainerDefault>
