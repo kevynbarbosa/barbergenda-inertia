@@ -25,6 +25,15 @@ class SolicitationController extends Controller
             ->paginate(15)
             ->withQueryString();
 
+        // Adiciona informações de SLA para cada solicitação
+        $solicitations->getCollection()->transform(function ($solicitation) {
+            return $solicitation->append([
+                'is_overdue',
+                'sla_status',
+                'sla_status_color'
+            ]);
+        });
+
         return Inertia::render('solicitations/Index', [
             'solicitations' => $solicitations,
             'filters' => [
@@ -47,11 +56,15 @@ class SolicitationController extends Controller
         );
 
         // Cria a solicitação
-        Solicitation::create([
+        $solicitation = Solicitation::create([
             'person_id' => $person->id,
             'status' => 'pending',
             'stage_id' => 1, // Primeira etapa (Análise Inicial)
         ]);
+
+        // Calcula a data estimada de conclusão baseada no SLA da etapa
+        $solicitation->load('stage');
+        $solicitation->calculateEstimatedCompletion();
 
         return redirect()->route('solicitations.index')
             ->with('success', 'Solicitação criada com sucesso.');

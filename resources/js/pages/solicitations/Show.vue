@@ -156,7 +156,7 @@ interface Solicitation {
     updated_at: string;
 }
 
-const props = defineProps<{
+const { solicitation } = defineProps<{
     solicitation: Solicitation;
 }>();
 

@@ -44,6 +44,7 @@
                     <Table>
                         <TableHeader>
                             <TableRow>
+                                <TableHead class="w-12">SLA</TableHead>
                                 <TableHead>ID</TableHead>
                                 <TableHead>Nome</TableHead>
                                 <TableHead>Documento</TableHead>
@@ -55,9 +56,39 @@
                         </TableHeader>
                         <TableBody>
                             <TableRow v-for="solicitation in solicitations.data" :key="solicitation.id">
+                                <TableCell class="text-center">
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger as-child>
+                                                <div class="flex justify-center">
+                                                    <div
+                                                        class="h-3 w-3 rounded-full"
+                                                        :class="{
+                                                            'bg-green-500': solicitation.sla_status === 'on_time',
+                                                            'bg-orange-500': solicitation.sla_status === 'overdue',
+                                                            'bg-gray-400': solicitation.sla_status === 'unknown',
+                                                        }"
+                                                    ></div>
+                                                </div>
+                                            </TooltipTrigger>
+                                            <TooltipContent class="bg-background text-foreground border border-border shadow-md">
+                                                <p class="text-sm">
+                                                    <span v-if="solicitation.sla_status === 'on_time'"> Em dia </span>
+                                                    <span v-else-if="solicitation.sla_status === 'overdue'"> Atrasado </span>
+                                                    <span v-else> SLA não definido </span>
+                                                </p>
+                                                <p v-if="solicitation.estimated_completion_at" class="mt-1 text-xs text-muted-foreground">
+                                                    Previsão: {{ formatDate(solicitation.estimated_completion_at) }}
+                                                </p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </TableCell>
                                 <TableCell class="font-medium">#{{ solicitation.id }}</TableCell>
                                 <TableCell>{{ solicitation.person?.name || '-' }}</TableCell>
-                                <TableCell class="font-mono">{{ solicitation.person?.document ? formatDocument(solicitation.person.document) : '-' }}</TableCell>
+                                <TableCell class="font-mono">{{
+                                    solicitation.person?.document ? formatDocument(solicitation.person.document) : '-'
+                                }}</TableCell>
                                 <TableCell>
                                     <Badge :variant="getStatusVariant(solicitation.status)">
                                         {{ getStatusLabel(solicitation.status) }}
@@ -104,10 +135,11 @@ import ContainerDefault from '@/components/ContainerDefault.vue';
 import DataTablePagination from '@/components/DataTablePagination.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { formatDate } from '@/lib/date-utils';
 import { formatDocument } from '@/lib/document-utils';
 import { create as solicitationsCreate, show as solicitationsShow } from '@/routes/solicitations';
@@ -133,6 +165,10 @@ interface PaginatedSolicitations {
         };
         created_at: string;
         updated_at: string;
+        estimated_completion_at?: string;
+        is_overdue: boolean;
+        sla_status: 'on_time' | 'overdue' | 'unknown';
+        sla_status_color: string;
     }>;
     first_page_url: string;
     from: number;
@@ -155,13 +191,12 @@ const props = defineProps<{
 
 const searchTerm = ref(props.filters.search || '');
 
-
 const getStatusVariant = (status: string) => {
     const variants = {
         pending: 'secondary',
         approved: 'verified',
         rejected: 'destructive',
-        in_review: 'outline'
+        in_review: 'outline',
     };
     return variants[status as keyof typeof variants] || 'secondary';
 };
@@ -171,7 +206,7 @@ const getStatusLabel = (status: string) => {
         pending: 'Pendente',
         approved: 'Aprovado',
         rejected: 'Rejeitado',
-        in_review: 'Em Análise'
+        in_review: 'Em Análise',
     };
     return labels[status as keyof typeof labels] || status;
 };
