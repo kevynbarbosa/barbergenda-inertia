@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import NavFooter from '@/components/NavFooter.vue';
-import NavMain from '@/components/NavMain.vue';
-import NavUser from '@/components/NavUser.vue';
-import ThemeToggle from '@/components/ThemeToggle.vue';
+import NavFooter from '@/components/layouts/NavFooter.vue';
+import NavMain from '@/components/layouts/NavMain.vue';
+import NavUser from '@/components/layouts/NavUser.vue';
+import ThemeToggle from '@/components/common/ThemeToggle.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as peopleIndex } from '@/routes/people';
@@ -12,7 +12,7 @@ import { index as usersIndex } from '@/routes/users';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { BookOpen, Database, FileText, Folder, Inbox, LayoutGrid, ShieldUser, Users } from 'lucide-vue-next';
-import AppLogo from './AppLogo.vue';
+import AppLogo from '@/components/common/AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
     {

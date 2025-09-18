@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import ContainerDefault from '@/components/ContainerDefault.vue';
+import ContainerDefault from '@/components/layouts/ContainerDefault.vue';
 import { modules as moduleData } from '@/components/rbac/data';
 import ModuleList from '@/components/rbac/ModuleList.vue';
 import PermissionsList from '@/components/rbac/PermissionsList.vue';

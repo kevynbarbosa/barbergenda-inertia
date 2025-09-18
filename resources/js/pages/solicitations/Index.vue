@@ -49,9 +49,9 @@
 </template>
 
 <script setup lang="ts">
-import ContainerDefault from '@/components/ContainerDefault.vue';
-import DataTablePagination from '@/components/DataTablePagination.vue';
-import SolicitationsTable from '@/components/SolicitationsTable.vue';
+import ContainerDefault from '@/components/layouts/ContainerDefault.vue';
+import DataTablePagination from '@/components/common/DataTablePagination.vue';
+import SolicitationsTable from '@/components/solicitations/SolicitationsTable.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';

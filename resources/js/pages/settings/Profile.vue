@@ -3,10 +3,10 @@ import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileCo
 import { send } from '@/routes/verification';
 import { Form, Head, Link, usePage } from '@inertiajs/vue3';
 
-import ContainerDefault from '@/components/ContainerDefault.vue';
-import DeleteUser from '@/components/DeleteUser.vue';
-import InputError from '@/components/InputError.vue';
-import SettingsNav from '@/components/SettingsNav.vue';
+import ContainerDefault from '@/components/layouts/ContainerDefault.vue';
+import DeleteUser from '@/components/users/DeleteUser.vue';
+import InputError from '@/components/common/InputError.vue';
+import SettingsNav from '@/components/common/SettingsNav.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';

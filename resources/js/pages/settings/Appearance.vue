@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
 
-import AppearanceTabs from '@/components/AppearanceTabs.vue';
-import ContainerDefault from '@/components/ContainerDefault.vue';
-import SettingsNav from '@/components/SettingsNav.vue';
+import AppearanceTabs from '@/components/common/AppearanceTabs.vue';
+import ContainerDefault from '@/components/layouts/ContainerDefault.vue';
+import SettingsNav from '@/components/common/SettingsNav.vue';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 </script>
 

@@ -125,7 +125,7 @@
 </template>
 
 <script setup lang="ts">
-import ContainerDefault from '@/components/ContainerDefault.vue';
+import ContainerDefault from '@/components/layouts/ContainerDefault.vue';
 import SolicitationStageActions from '@/components/solicitations/SolicitationStageActions.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

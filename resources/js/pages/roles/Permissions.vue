@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import ContainerDefault from '@/components/ContainerDefault.vue';
+import ContainerDefault from '@/components/layouts/ContainerDefault.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';

@@ -63,8 +63,8 @@
 </template>
 
 <script setup lang="ts">
-import ContainerDefault from '@/components/ContainerDefault.vue';
-import InputError from '@/components/InputError.vue';
+import ContainerDefault from '@/components/layouts/ContainerDefault.vue';
+import InputError from '@/components/common/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
-import ContainerDefault from '@/components/ContainerDefault.vue';
-import InputError from '@/components/InputError.vue';
-import SettingsNav from '@/components/SettingsNav.vue';
+import ContainerDefault from '@/components/layouts/ContainerDefault.vue';
+import InputError from '@/components/common/InputError.vue';
+import SettingsNav from '@/components/common/SettingsNav.vue';
 import { Form, Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
