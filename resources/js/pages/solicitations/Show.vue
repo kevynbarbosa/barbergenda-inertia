@@ -1,42 +1,29 @@
 <template>
     <ContainerDefault>
-        <!-- Header -->
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-                <h1 class="text-3xl font-bold">Detalhes da Solicitação #{{ solicitation.id }}</h1>
-                <p class="text-muted-foreground">
-                    Visualize todas as informações da solicitação
-                </p>
-            </div>
-            <Button as-child variant="outline">
-                <Link :href="solicitationsIndex.url()">
-                    <ArrowLeft class="mr-2 h-4 w-4" />
-                    Voltar
-                </Link>
-            </Button>
-        </div>
-
         <!-- Details Card -->
         <Card>
             <CardHeader>
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <CardTitle>Informações da Solicitação</CardTitle>
-                        <CardDescription>
-                            Dados completos da solicitação registrada no sistema
-                        </CardDescription>
+                        <CardTitle class="text-3xl">Detalhes da Solicitação #{{ solicitation.id }}</CardTitle>
+                        <CardDescription> Visualize todas as informações da solicitação </CardDescription>
                     </div>
-                    <Badge :variant="getStatusVariant(solicitation.status)" class="text-sm">
-                        {{ getStatusLabel(solicitation.status) }}
-                    </Badge>
+                    <div class="flex items-center gap-2">
+                        <Button as-child variant="outline">
+                            <Link :href="solicitationsIndex.url()">
+                                <ArrowLeft class="mr-2 h-4 w-4" />
+                                Voltar
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
             </CardHeader>
             <CardContent class="space-y-6">
                 <!-- Informações Básicas -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div class="space-y-2">
                         <Label class="text-sm font-medium text-muted-foreground">ID da Solicitação</Label>
-                        <p class="text-lg font-mono">#{{ solicitation.id }}</p>
+                        <p class="font-mono text-lg">#{{ solicitation.id }}</p>
                     </div>
 
                     <div class="space-y-2">
@@ -55,7 +42,7 @@
 
                     <div class="space-y-2" v-if="solicitation.person?.document">
                         <Label class="text-sm font-medium text-muted-foreground">{{ getDocumentLabel(solicitation.person.document) }}</Label>
-                        <p class="text-lg font-mono">{{ formatDocument(solicitation.person.document) }}</p>
+                        <p class="font-mono text-lg">{{ formatDocument(solicitation.person.document) }}</p>
                     </div>
 
                     <div class="space-y-2">
@@ -89,8 +76,8 @@
                         <Label class="text-sm font-medium text-muted-foreground">Histórico da Solicitação</Label>
                     </div>
                     <div class="ml-7 space-y-3">
-                        <div class="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                            <div class="h-2 w-2 bg-primary rounded-full"></div>
+                        <div class="flex items-center gap-3 rounded-lg bg-muted/30 p-3">
+                            <div class="h-2 w-2 rounded-full bg-primary"></div>
                             <div class="flex-1">
                                 <p class="text-sm">
                                     <span class="font-medium">Solicitação criada</span>
@@ -101,8 +88,8 @@
                             </div>
                         </div>
 
-                        <div v-if="solicitation.status !== 'pending'" class="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                            <div class="h-2 w-2 bg-muted-foreground rounded-full"></div>
+                        <div v-if="solicitation.status !== 'pending'" class="flex items-center gap-3 rounded-lg bg-muted/30 p-3">
+                            <div class="h-2 w-2 rounded-full bg-muted-foreground"></div>
                             <div class="flex-1">
                                 <p class="text-sm">
                                     <span class="font-medium">Status alterado para {{ getStatusLabel(solicitation.status) }}</span>
@@ -165,7 +152,7 @@ const getStatusVariant = (status: string) => {
         pending: 'secondary',
         approved: 'verified',
         rejected: 'destructive',
-        in_review: 'outline'
+        in_review: 'outline',
     };
     return variants[status as keyof typeof variants] || 'secondary';
 };
@@ -175,7 +162,7 @@ const getStatusLabel = (status: string) => {
         pending: 'Pendente',
         approved: 'Aprovado',
         rejected: 'Rejeitado',
-        in_review: 'Em Análise'
+        in_review: 'Em Análise',
     };
     return labels[status as keyof typeof labels] || status;
 };
