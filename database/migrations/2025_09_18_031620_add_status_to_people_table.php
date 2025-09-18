@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('solicitations', function (Blueprint $table) {
-            $table->foreignId('stage_id')->nullable()->constrained('stages')->onDelete('set null');
+        Schema::table('people', function (Blueprint $table) {
+            $table->enum('status', ['ativo', 'expirado', 'blacklist'])->default('ativo');
         });
     }
 
@@ -21,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('solicitations', function (Blueprint $table) {
-            $table->dropForeign(['stage_id']);
-            $table->dropColumn('stage_id');
+        Schema::table('people', function (Blueprint $table) {
+            $table->dropColumn('status');
         });
     }
 };

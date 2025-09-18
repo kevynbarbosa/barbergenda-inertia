@@ -14,9 +14,9 @@ class SolicitationController extends Controller
     {
         $search = request('search');
 
-        $solicitations = Solicitation::with('stage')
+        $solicitations = Solicitation::with(['stage', 'person'])
             ->when($search, function ($query, $search) {
-                $query->where(function ($query) use ($search) {
+                $query->whereHas('person', function ($query) use ($search) {
                     $query->where('name', 'ILIKE', "%{$search}%")
                           ->orWhere('document', 'ILIKE', "%{$search}%");
                 });
@@ -40,10 +40,17 @@ class SolicitationController extends Controller
 
     public function store(StoreSolicitationRequest $request): RedirectResponse
     {
+        // Busca ou cria a pessoa
+        $person = \App\Models\Person::firstOrCreate(
+            ['document' => $request->document],
+            ['name' => $request->name]
+        );
+
+        // Cria a solicitação
         Solicitation::create([
-            'name' => $request->name,
-            'document' => $request->document,
+            'person_id' => $person->id,
             'status' => 'pending',
+            'stage_id' => 1, // Primeira etapa (Análise Inicial)
         ]);
 
         return redirect()->route('solicitations.index')
@@ -52,7 +59,7 @@ class SolicitationController extends Controller
 
     public function show(Solicitation $solicitation): Response
     {
-        $solicitation->load('stage');
+        $solicitation->load(['stage', 'person']);
 
         return Inertia::render('solicitations/Show', [
             'solicitation' => $solicitation,

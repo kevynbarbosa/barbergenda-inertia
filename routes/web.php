@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SolicitationController;
@@ -25,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('solicitations/create', [SolicitationController::class, 'create'])->name('solicitations.create');
     Route::post('solicitations', [SolicitationController::class, 'store'])->name('solicitations.store');
     Route::get('solicitations/{solicitation}', [SolicitationController::class, 'show'])->name('solicitations.show');
+    Route::get('base-ativa', [PeopleController::class, 'index'])->name('people.index');
 });
 
 require __DIR__ . '/settings.php';

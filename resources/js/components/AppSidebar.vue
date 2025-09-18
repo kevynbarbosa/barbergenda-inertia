@@ -5,12 +5,13 @@ import NavUser from '@/components/NavUser.vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { index as peopleIndex } from '@/routes/people';
 import { index as rolesIndex } from '@/routes/roles';
 import { index as solicitationsIndex } from '@/routes/solicitations';
 import { index as usersIndex } from '@/routes/users';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, FileText, Folder, Inbox, LayoutGrid, ShieldUser, Users } from 'lucide-vue-next';
+import { BookOpen, Database, FileText, Folder, Inbox, LayoutGrid, ShieldUser, Users } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -36,6 +37,12 @@ const mainNavItems: NavItem[] = [
         title: 'Solicitações',
         href: solicitationsIndex.url(),
         icon: FileText,
+    },
+
+    {
+        title: 'Base Ativa',
+        href: peopleIndex.url(),
+        icon: Database,
     },
 
     {

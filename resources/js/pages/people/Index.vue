@@ -6,19 +6,13 @@
                 <div class="flex flex-col gap-4">
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                            <CardTitle class="text-3xl">Lista de Solicitações</CardTitle>
+                            <CardTitle class="text-3xl">Base Ativa</CardTitle>
                             <CardDescription>
-                                Mostrando {{ solicitations.from || 0 }} a {{ solicitations.to || 0 }} de {{ solicitations.total || 0 }} solicitações
+                                Mostrando {{ people.from || 0 }} a {{ people.to || 0 }} de {{ people.total || 0 }} pessoas
                             </CardDescription>
                         </div>
-                        <Button as-child class="w-fit">
-                            <Link :href="solicitationsCreate.url()">
-                                <Plus class="mr-2 h-4 w-4" />
-                                Nova Solicitação
-                            </Link>
-                        </Button>
                     </div>
-                    <div class="flex justify-end">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
                         <div class="w-full max-w-sm">
                             <div class="relative">
                                 <Input
@@ -36,6 +30,36 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="flex gap-2">
+                            <Button
+                                @click="setStatusFilter('')"
+                                :variant="statusFilter === '' ? 'default' : 'outline'"
+                                size="sm"
+                            >
+                                Todos
+                            </Button>
+                            <Button
+                                @click="setStatusFilter('ativo')"
+                                :variant="statusFilter === 'ativo' ? 'default' : 'outline'"
+                                size="sm"
+                            >
+                                Ativo
+                            </Button>
+                            <Button
+                                @click="setStatusFilter('expirado')"
+                                :variant="statusFilter === 'expirado' ? 'default' : 'outline'"
+                                size="sm"
+                            >
+                                Expirado
+                            </Button>
+                            <Button
+                                @click="setStatusFilter('blacklist')"
+                                :variant="statusFilter === 'blacklist' ? 'default' : 'outline'"
+                                size="sm"
+                            >
+                                Blacklist
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </CardHeader>
@@ -48,52 +72,26 @@
                                 <TableHead>Nome</TableHead>
                                 <TableHead>Documento</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead>Etapa</TableHead>
                                 <TableHead>Data de Criação</TableHead>
-                                <TableHead class="text-right">Ações</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            <TableRow v-for="solicitation in solicitations.data" :key="solicitation.id">
-                                <TableCell class="font-medium">#{{ solicitation.id }}</TableCell>
-                                <TableCell>{{ solicitation.person?.name || '-' }}</TableCell>
-                                <TableCell class="font-mono">{{ solicitation.person?.document ? formatDocument(solicitation.person.document) : '-' }}</TableCell>
+                            <TableRow v-for="person in people.data" :key="person.id">
+                                <TableCell class="font-medium">#{{ person.id }}</TableCell>
+                                <TableCell>{{ person.name }}</TableCell>
+                                <TableCell class="font-mono">{{ formatDocument(person.document) }}</TableCell>
                                 <TableCell>
-                                    <Badge :variant="getStatusVariant(solicitation.status)">
-                                        {{ getStatusLabel(solicitation.status) }}
+                                    <Badge :variant="getStatusVariant(person.status)">
+                                        {{ getStatusLabel(person.status) }}
                                     </Badge>
                                 </TableCell>
-                                <TableCell>
-                                    <span v-if="solicitation.stage" class="text-sm text-muted-foreground">
-                                        {{ solicitation.stage.name }}
-                                    </span>
-                                    <span v-else class="text-sm text-muted-foreground">-</span>
-                                </TableCell>
-                                <TableCell>{{ formatDate(solicitation.created_at) }}</TableCell>
-                                <TableCell class="text-right">
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger as-child>
-                                            <Button variant="outline" size="icon">
-                                                <MoreHorizontal class="h-4 w-4" />
-                                                <span class="sr-only">Abrir menu</span>
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                            <DropdownMenuItem as-child>
-                                                <Link :href="solicitationsShow.url(solicitation.id)" class="flex cursor-default items-center">
-                                                    <Eye class="mr-2 h-4 w-4" />
-                                                    Visualizar
-                                                </Link>
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
+                                <TableCell>{{ formatDate(person.created_at) }}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
                 </div>
                 <!-- Paginação -->
-                <DataTablePagination :data="solicitations" />
+                <DataTablePagination :data="people" />
             </CardContent>
         </Card>
     </ContainerDefault>
@@ -104,33 +102,22 @@ import ContainerDefault from '@/components/ContainerDefault.vue';
 import DataTablePagination from '@/components/DataTablePagination.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatDate } from '@/lib/date-utils';
 import { formatDocument } from '@/lib/document-utils';
-import { create as solicitationsCreate, show as solicitationsShow } from '@/routes/solicitations';
-import { Link, router } from '@inertiajs/vue3';
-import { Eye, MoreHorizontal, Plus, Search, X } from 'lucide-vue-next';
+import { router } from '@inertiajs/vue3';
+import { Search, X } from 'lucide-vue-next';
 import { ref } from 'vue';
 
-interface PaginatedSolicitations {
+interface PaginatedPeople {
     current_page: number;
     data: Array<{
         id: number;
-        status: 'pending' | 'approved' | 'rejected' | 'in_review';
-        person?: {
-            id: number;
-            name: string;
-            document: string;
-        };
-        stage?: {
-            id: number;
-            name: string;
-            description: string;
-            sla: number;
-        };
+        name: string;
+        document: string;
+        status: 'ativo' | 'expirado' | 'blacklist';
         created_at: string;
         updated_at: string;
     }>;
@@ -147,31 +134,30 @@ interface PaginatedSolicitations {
 }
 
 const props = defineProps<{
-    solicitations: PaginatedSolicitations;
+    people: PaginatedPeople;
     filters: {
         search: string | null;
+        status: string | null;
     };
 }>();
 
 const searchTerm = ref(props.filters.search || '');
-
+const statusFilter = ref(props.filters.status || '');
 
 const getStatusVariant = (status: string) => {
     const variants = {
-        pending: 'secondary',
-        approved: 'verified',
-        rejected: 'destructive',
-        in_review: 'outline'
+        ativo: 'verified',
+        expirado: 'secondary',
+        blacklist: 'destructive'
     };
     return variants[status as keyof typeof variants] || 'secondary';
 };
 
 const getStatusLabel = (status: string) => {
     const labels = {
-        pending: 'Pendente',
-        approved: 'Aprovado',
-        rejected: 'Rejeitado',
-        in_review: 'Em Análise'
+        ativo: 'Ativo',
+        expirado: 'Expirado',
+        blacklist: 'Blacklist'
     };
     return labels[status as keyof typeof labels] || status;
 };
@@ -187,9 +173,10 @@ const debounce = (func: (...args: any[]) => void, wait: number) => {
 
 const performSearch = debounce(() => {
     router.get(
-        '/solicitations',
+        '/base-ativa',
         {
             search: searchTerm.value || undefined,
+            status: statusFilter.value || undefined,
         },
         {
             preserveState: true,
@@ -203,11 +190,18 @@ const handleSearch = () => {
     performSearch();
 };
 
+const setStatusFilter = (status: string) => {
+    statusFilter.value = status;
+    performSearch();
+};
+
 const clearSearch = () => {
     searchTerm.value = '';
     router.get(
-        '/solicitations',
-        {},
+        '/base-ativa',
+        {
+            status: statusFilter.value || undefined,
+        },
         {
             preserveState: true,
             preserveScroll: true,

@@ -11,8 +11,7 @@ class Solicitation extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'document',
+        'person_id',
         'status',
         'stage_id',
     ];
@@ -28,5 +27,10 @@ class Solicitation extends Model
     public function stage()
     {
         return $this->belongsTo(Stage::class);
+    }
+
+    public function person()
+    {
+        return $this->belongsTo(Person::class);
     }
 }

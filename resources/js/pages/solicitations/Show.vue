@@ -50,12 +50,12 @@
 
                     <div class="space-y-2">
                         <Label class="text-sm font-medium text-muted-foreground">Nome/Razão Social</Label>
-                        <p class="text-lg">{{ solicitation.name }}</p>
+                        <p class="text-lg">{{ solicitation.person?.name || '-' }}</p>
                     </div>
 
-                    <div class="space-y-2">
-                        <Label class="text-sm font-medium text-muted-foreground">{{ getDocumentLabel(solicitation.document) }}</Label>
-                        <p class="text-lg font-mono">{{ formatDocument(solicitation.document) }}</p>
+                    <div class="space-y-2" v-if="solicitation.person?.document">
+                        <Label class="text-sm font-medium text-muted-foreground">{{ getDocumentLabel(solicitation.person.document) }}</Label>
+                        <p class="text-lg font-mono">{{ formatDocument(solicitation.person.document) }}</p>
                     </div>
 
                     <div class="space-y-2">
@@ -134,9 +134,12 @@ import { ArrowLeft, Clock } from 'lucide-vue-next';
 
 interface Solicitation {
     id: number;
-    name: string;
-    document: string;
     status: 'pending' | 'approved' | 'rejected' | 'in_review';
+    person?: {
+        id: number;
+        name: string;
+        document: string;
+    };
     stage?: {
         id: number;
         name: string;

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('solicitations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('document');
+            $table->foreignId('person_id')->constrained('people')->onDelete('cascade');
+            $table->foreignId('stage_id')->nullable()->constrained('stages')->onDelete('set null');
             $table->enum('status', ['pending', 'approved', 'rejected', 'in_review'])->default('pending');
             $table->timestamps();
         });
