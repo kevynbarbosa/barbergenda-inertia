@@ -40,89 +40,7 @@
                 </div>
             </CardHeader>
             <CardContent class="p-0">
-                <div class="overflow-hidden">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead class="w-12">SLA</TableHead>
-                                <TableHead>ID</TableHead>
-                                <TableHead>Nome</TableHead>
-                                <TableHead>Documento</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead>Etapa</TableHead>
-                                <TableHead>Data de Criação</TableHead>
-                                <TableHead class="text-right">Ações</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            <TableRow v-for="solicitation in solicitations.data" :key="solicitation.id">
-                                <TableCell class="text-center">
-                                    <TooltipProvider>
-                                        <Tooltip>
-                                            <TooltipTrigger as-child>
-                                                <div class="flex justify-center">
-                                                    <div
-                                                        class="h-3 w-3 rounded-full"
-                                                        :class="{
-                                                            'bg-green-500': solicitation.sla_status === 'on_time',
-                                                            'bg-orange-500': solicitation.sla_status === 'overdue',
-                                                            'bg-gray-400': solicitation.sla_status === 'unknown',
-                                                        }"
-                                                    ></div>
-                                                </div>
-                                            </TooltipTrigger>
-                                            <TooltipContent class="bg-background text-foreground border border-border shadow-md">
-                                                <p class="text-sm">
-                                                    <span v-if="solicitation.sla_status === 'on_time'"> Em dia </span>
-                                                    <span v-else-if="solicitation.sla_status === 'overdue'"> Atrasado </span>
-                                                    <span v-else> SLA não definido </span>
-                                                </p>
-                                                <p v-if="solicitation.estimated_completion_at" class="mt-1 text-xs text-muted-foreground">
-                                                    Previsão: {{ formatDate(solicitation.estimated_completion_at) }}
-                                                </p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </TableCell>
-                                <TableCell class="font-medium">#{{ solicitation.id }}</TableCell>
-                                <TableCell>{{ solicitation.person?.name || '-' }}</TableCell>
-                                <TableCell class="font-mono">{{
-                                    solicitation.person?.document ? formatDocument(solicitation.person.document) : '-'
-                                }}</TableCell>
-                                <TableCell>
-                                    <Badge :variant="getStatusVariant(solicitation.status)">
-                                        {{ getStatusLabel(solicitation.status) }}
-                                    </Badge>
-                                </TableCell>
-                                <TableCell>
-                                    <span v-if="solicitation.stage" class="text-sm text-muted-foreground">
-                                        {{ solicitation.stage.name }}
-                                    </span>
-                                    <span v-else class="text-sm text-muted-foreground">-</span>
-                                </TableCell>
-                                <TableCell>{{ formatDate(solicitation.created_at) }}</TableCell>
-                                <TableCell class="text-right">
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger as-child>
-                                            <Button variant="outline" size="icon">
-                                                <MoreHorizontal class="h-4 w-4" />
-                                                <span class="sr-only">Abrir menu</span>
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                            <DropdownMenuItem as-child>
-                                                <Link :href="solicitationsShow.url(solicitation.id)" class="flex cursor-default items-center">
-                                                    <Eye class="mr-2 h-4 w-4" />
-                                                    Visualizar
-                                                </Link>
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </div>
+                <SolicitationsTable :solicitations="solicitations.data" />
                 <!-- Paginação -->
                 <DataTablePagination :data="solicitations" />
             </CardContent>
@@ -133,83 +51,22 @@
 <script setup lang="ts">
 import ContainerDefault from '@/components/ContainerDefault.vue';
 import DataTablePagination from '@/components/DataTablePagination.vue';
-import { Badge } from '@/components/ui/badge';
+import SolicitationsTable from '@/components/SolicitationsTable.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { formatDate } from '@/lib/date-utils';
-import { formatDocument } from '@/lib/document-utils';
-import { create as solicitationsCreate, show as solicitationsShow } from '@/routes/solicitations';
+import { create as solicitationsCreate } from '@/routes/solicitations';
 import { Link, router } from '@inertiajs/vue3';
-import { Eye, MoreHorizontal, Plus, Search, X } from 'lucide-vue-next';
+import { Plus, Search, X } from 'lucide-vue-next';
 import { ref } from 'vue';
-
-interface PaginatedSolicitations {
-    current_page: number;
-    data: Array<{
-        id: number;
-        status: 'pending' | 'approved' | 'rejected' | 'in_review';
-        person?: {
-            id: number;
-            name: string;
-            document: string;
-        };
-        stage?: {
-            id: number;
-            name: string;
-            description: string;
-            sla: number;
-        };
-        created_at: string;
-        updated_at: string;
-        estimated_completion_at?: string;
-        is_overdue: boolean;
-        sla_status: 'on_time' | 'overdue' | 'unknown';
-        sla_status_color: string;
-    }>;
-    first_page_url: string;
-    from: number;
-    last_page: number;
-    last_page_url: string;
-    next_page_url: string | null;
-    path: string;
-    per_page: number;
-    prev_page_url: string | null;
-    to: number;
-    total: number;
-}
+import type { PaginatedSolicitations, SolicitationsFilters } from '@/types/solicitations';
 
 const props = defineProps<{
     solicitations: PaginatedSolicitations;
-    filters: {
-        search: string | null;
-    };
+    filters: SolicitationsFilters;
 }>();
 
 const searchTerm = ref(props.filters.search || '');
-
-const getStatusVariant = (status: string) => {
-    const variants = {
-        pending: 'secondary',
-        approved: 'verified',
-        rejected: 'destructive',
-        in_review: 'outline',
-    };
-    return variants[status as keyof typeof variants] || 'secondary';
-};
-
-const getStatusLabel = (status: string) => {
-    const labels = {
-        pending: 'Pendente',
-        approved: 'Aprovado',
-        rejected: 'Rejeitado',
-        in_review: 'Em Análise',
-    };
-    return labels[status as keyof typeof labels] || status;
-};
 
 // Função debounce simples
 const debounce = (func: (...args: any[]) => void, wait: number) => {
