@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'name' => 'LaravelPWA',
+    'name' => env('APP_NAME'),
     'manifest' => [
         'name' => env('APP_NAME'),
         'short_name' => env('APP_NAME'),
@@ -9,54 +9,70 @@ return [
         'background_color' => '#ffffff',
         'theme_color' => '#000000',
         'display' => 'standalone',
-        'orientation'=> 'any',
-        'status_bar'=> 'black',
+        'orientation' => 'any',
+        'status_bar' => 'black',
         'icons' => [
-            '180x180' => [
-                'path' => '/pwa/apple-icon-180.png',
+            '72x72' => [
+                'path' => '/pwa/icon-72x72.png',
+                'purpose' => 'any'
+            ],
+            '96x96' => [
+                'path' => '/pwa/icon-96x96.png',
+                'purpose' => 'any'
+            ],
+            '128x128' => [
+                'path' => '/pwa/icon-128x128.png',
+                'purpose' => 'any'
+            ],
+            '144x144' => [
+                'path' => '/pwa/icon-144x144.png',
+                'purpose' => 'any'
+            ],
+            '152x152' => [
+                'path' => '/pwa/icon-152x152.png',
                 'purpose' => 'any'
             ],
             '192x192' => [
-                'path' => '/pwa/manifest-icon-192.maskable.png',
-                'purpose' => 'maskable'
+                'path' => '/pwa/icon-192x192.png',
+                'purpose' => 'any'
             ],
-            '196x196' => [
-                'path' => '/pwa/favicon-196.png',
+            '384x384' => [
+                'path' => '/pwa/icon-384x384.png',
                 'purpose' => 'any'
             ],
             '512x512' => [
-                'path' => '/pwa/manifest-icon-512.maskable.png',
-                'purpose' => 'maskable'
+                'path' => '/pwa/icon-512x512.png',
+                'purpose' => 'any'
             ],
         ],
         'splash' => [
-            '640x1136' => '/pwa/apple-splash-640-1136.jpg',
-            '750x1334' => '/pwa/apple-splash-750-1334.jpg',
-            '828x1792' => '/pwa/apple-splash-828-1792.jpg',
-            '1125x2436' => '/pwa/apple-splash-1125-2436.jpg',
-            '1242x2208' => '/pwa/apple-splash-1242-2208.jpg',
-            '1242x2688' => '/pwa/apple-splash-1242-2688.jpg',
-            '1536x2048' => '/pwa/apple-splash-1536-2048.jpg',
-            '1668x2224' => '/pwa/apple-splash-1668-2224.jpg',
-            '1668x2388' => '/pwa/apple-splash-1668-2388.jpg',
-            '2048x2732' => '/pwa/apple-splash-2048-2732.jpg',
+            '640x1136' => '/pwa/splash-640x1136.png',
+            '750x1334' => '/pwa/splash-750x1334.png',
+            '828x1792' => '/pwa/splash-828x1792.png',
+            '1125x2436' => '/pwa/splash-1125x2436.png',
+            '1242x2208' => '/pwa/splash-1242x2208.png',
+            '1242x2688' => '/pwa/splash-1242x2688.png',
+            '1536x2048' => '/pwa/splash-1536x2048.png',
+            '1668x2224' => '/pwa/splash-1668x2224.png',
+            '1668x2388' => '/pwa/splash-1668x2388.png',
+            '2048x2732' => '/pwa/splash-2048x2732.png',
         ],
-        // 'shortcuts' => [
-        //     [
-        //         'name' => 'Shortcut Link 1',
-        //         'description' => 'Shortcut Link 1 Description',
-        //         'url' => '/shortcutlink1',
-        //         'icons' => [
-        //             "src" => "/pwa/icon-72x72.png",
-        //             "purpose" => "any"
-        //         ]
-        //     ],
-        //     [
-        //         'name' => 'Shortcut Link 2',
-        //         'description' => 'Shortcut Link 2 Description',
-        //         'url' => '/shortcutlink2'
-        //     ]
-        // ],
+        'shortcuts' => [
+            [
+                'name' => 'Shortcut Link 1',
+                'description' => 'Shortcut Link 1 Description',
+                'url' => '/shortcutlink1',
+                'icons' => [
+                    "src" => "/images/icons/icon-72x72.png",
+                    "purpose" => "any"
+                ]
+            ],
+            [
+                'name' => 'Shortcut Link 2',
+                'description' => 'Shortcut Link 2 Description',
+                'url' => '/shortcutlink2'
+            ]
+        ],
         'custom' => []
     ]
 ];
