@@ -29,5 +29,6 @@ return [
                 'purpose' => 'maskable'
             ],
         ],
+        'custom' => []
     ]
 ];
