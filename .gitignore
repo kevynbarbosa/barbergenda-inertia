@@ -10,6 +10,7 @@
 /resources/js/routes
 /resources/js/wayfinder
 /vendor
+/tests/Browser/Screenshots
 .env
 .env.backup
 .env.production
